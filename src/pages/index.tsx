@@ -20,6 +20,7 @@ import { updateFilteredPokemons } from "@/store/slices/pokemons";
 import { PAGE_SIZE } from "@/utils/constant";
 import DefaultMessage from "@/components/DefaultMessage";
 import Loader from "@/components/Loader";
+import { GetServerSidePropsContext } from "next";
 
 export default function Home() {
   const {
@@ -158,4 +159,17 @@ export default function Home() {
       )}
     </>
   );
+}
+
+export async function getServerSideProps({
+  res,
+}: GetServerSidePropsContext) {
+  res.setHeader(
+    "Cache-Control",
+    "public, s-maxage=10, stale-while-revalidate=59"
+  );
+
+  return {
+    props: {},
+  };
 }
