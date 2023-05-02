@@ -23,10 +23,8 @@ export default function useAuth() {
       }
       setLoading(false);
     };
-    return () => {
-      getUser();
-    };
-  });
+    getUser();
+  }, []);
 
   return { loading };
 }

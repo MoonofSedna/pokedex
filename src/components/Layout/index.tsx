@@ -1,3 +1,4 @@
+import Head from "next/head";
 import GlobalStyles from "@/utils/global-styles";
 // components
 import Header from "../Header";
@@ -12,6 +13,9 @@ export default function Layout({
   return (
     <C.Container>
       <GlobalStyles />
+      <Head>
+        <title>Pokedex</title>
+      </Head>
       <Header />
       <C.AppContainer>
         {children}

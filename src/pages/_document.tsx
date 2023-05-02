@@ -10,6 +10,10 @@ export default function Document() {
     <Html lang="en">
       <Head>
         <link
+          rel="icon"
+          href="/favicon.ico"
+        />
+        <link
           rel="preconnect"
           href="https://fonts.googleapis.com"
         />
@@ -18,7 +22,7 @@ export default function Document() {
           href="https://fonts.gstatic.com"
         />
         <link
-          href="https://fonts.googleapis.com/css2?family=Fira+Sans:wght@500&family=Merriweather&display=swap"
+          href="https://fonts.googleapis.com/css2?family=Fira+Sans:wght@500&display=swap"
           rel="stylesheet"
         />
       </Head>
