@@ -15,11 +15,23 @@ body {
   background-color: #1e213a;
 }
 
-body img {
-  user-select: none;
-  -webkit-user-drag: none;
+body::-webkit-scrollbar {
+  width: 12px;
 }
 
+/* Track */
+body::-webkit-scrollbar-track {
+  background: #c9c9c9;
+}
+
+/* Handle */
+body::-webkit-scrollbar-thumb {
+  background: #424242;
+}
+
+body::-webkit-scrollbar-thumb:hover {
+  background: #424242;
+}
 a {
   text-decoration: none !important;
 }
