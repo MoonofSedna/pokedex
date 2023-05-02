@@ -19,18 +19,17 @@ body::-webkit-scrollbar {
   width: 12px;
 }
 
-/* Track */
 body::-webkit-scrollbar-track {
   background: #c9c9c9;
 }
 
-/* Handle */
 body::-webkit-scrollbar-thumb {
   background: #424242;
+  border-radius: 5px;
 }
 
 body::-webkit-scrollbar-thumb:hover {
-  background: #424242;
+  background: #313131;
 }
 a {
   text-decoration: none !important;
