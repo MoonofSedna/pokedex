@@ -7,7 +7,7 @@ export const Breadcrumb = styled.div`
   font-size: 1rem;
   width: fit-content;
   text-transform: uppercase;
-  letter-spacing: 0.1rem;
+  letter-spacing: 0.06rem;
   font-weight: var(--bold);
   color: var(--white);
   padding: 1rem 0;

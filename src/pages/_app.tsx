@@ -1,5 +1,7 @@
 import type { AppProps } from "next/app";
 import { Provider } from "react-redux";
+// fonts
+import { Fira_Sans } from "next/font/google";
 // components
 import Layout from "@/components/Layout";
 import Loader from "@/components/Loader";
@@ -9,6 +11,11 @@ import useAuth from "@/hooks/useAuth";
 import store from "@/store";
 // styles
 import "@/styles/globals.css";
+
+const firaSans = Fira_Sans({
+  weight: ["500", "600", "800"],
+  subsets: ["latin"],
+});
 
 export default function App({
   Component,
@@ -21,7 +28,9 @@ export default function App({
       {loading ? (
         <Loader />
       ) : (
-        <Layout>
+        <Layout
+          className={firaSans.className}
+        >
           <Component {...pageProps} />
         </Layout>
       )}

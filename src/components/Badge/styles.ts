@@ -18,7 +18,6 @@ const Badge = styled.div<{
   border-radius: 0.3rem;
   color: #fff;
   padding: 0.5rem 0.6rem;
-  font-family: var(--fira-sans);
   background-color: ${(props) =>
     props.background};
   & img {

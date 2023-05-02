@@ -23,21 +23,6 @@ export const validateSignUp = (
 ) => {
   const errors = {} as Validation;
 
-  if (!values.username) {
-    errors.username =
-      "Username is required";
-  } else if (
-    values.username.length < 3
-  ) {
-    errors.username =
-      "Username must be at least 3 characters";
-  } else if (
-    values.username.length > 20
-  ) {
-    errors.username =
-      "Username must be less than 20 characters";
-  }
-
   if (!values.email) {
     errors.email = "Email is required";
   } else if (

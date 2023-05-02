@@ -6,12 +6,14 @@ import Header from "../Header";
 import * as C from "./styles";
 
 export default function Layout({
+  className,
   children,
 }: {
+  className?: string;
   children: React.ReactNode;
 }) {
   return (
-    <C.Container>
+    <C.Container className={className}>
       <GlobalStyles />
       <Head>
         <title>Pokedex</title>

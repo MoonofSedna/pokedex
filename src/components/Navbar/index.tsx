@@ -56,13 +56,15 @@ export default function Navbar() {
   return (
     <C.Navbar>
       <span>
-        <Image
-          src={Logo}
-          alt="logo"
-          width={150}
-          height={45}
-          priority
-        />
+        <Link href="/">
+          <Image
+            src={Logo}
+            alt="logo"
+            width={150}
+            height={45}
+            priority
+          />
+        </Link>
       </span>
       <ul>
         {routes.map((route) => {

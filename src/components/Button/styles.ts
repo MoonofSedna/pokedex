@@ -21,7 +21,7 @@ export const Button = styled.button<{
     props.search
       ? "var(--white)"
       : "var(--dark-blue)"};
-  font-weight: 600;
+  font-weight: var(--bold);
   font-size: 1rem;
   cursor: pointer;
   transition: 0.5s ease-in-out;

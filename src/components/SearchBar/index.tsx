@@ -16,7 +16,6 @@ export default function SearchBar({
 }: SearchBarProps) {
   const [search, setSearch] =
     useState("");
-
   return (
     <C.Search>
       <div>
@@ -37,6 +36,11 @@ export default function SearchBar({
           value={search}
           onChange={(e) => {
             setSearch(e.target.value);
+          }}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              onSearch(search);
+            }
           }}
         />
       </div>

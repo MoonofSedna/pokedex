@@ -57,7 +57,6 @@ export const login = async (
   }
   return {
     id: data[0].id,
-    username: data[0].username,
     email: data[0].email,
     favorites:
       data[0].favorites.split(","),
@@ -66,8 +65,7 @@ export const login = async (
 
 export const signup = async (
   email: string,
-  password: string,
-  username: string
+  password: string
 ) => {
   const validate = await validateUser(
     email
@@ -85,7 +83,6 @@ export const signup = async (
     data: [
       {
         id,
-        username,
         email,
         password,
         favorites: "",
@@ -95,7 +92,6 @@ export const signup = async (
 
   return {
     id,
-    username,
     email,
     favorites: [],
   };
@@ -104,11 +100,16 @@ export const signup = async (
 export const updateUserData = async (
   user: User
 ) => {
-  await Api.patch(`id/${user.id}`, {
-    data: JSON.stringify({
-      username: user.username,
-      favorites:
-        user.favorites.join(","),
-    }),
-  });
+  try {
+    await Api.patch(`id/${user.id}`, {
+      data: JSON.stringify({
+        favorites:
+          user.favorites.join(","),
+      }),
+    });
+  } catch (error) {
+    throw new Error(
+      "Error updating user data"
+    );
+  }
 };

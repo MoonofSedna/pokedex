@@ -22,7 +22,6 @@ export const Search = styled.div`
       outline: none;
       font-size: 1rem;
       font-weight: 500;
-      font-family: var(--fira-sans);
     }
   }
 `;

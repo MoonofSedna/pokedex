@@ -2,8 +2,8 @@ import { createGlobalStyle } from "styled-components";
 
 const GlobalStyles = createGlobalStyle`
     :root {
-        --bold: 600;
-        --letter-spacing: 0.1rem;
+        --bold: 800;
+        --letter-spacing: 0.08rem;
         --dark-blue: #1E213A;
         --gray:#454555;
         --red: #F53838;

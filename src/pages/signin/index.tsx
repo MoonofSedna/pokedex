@@ -20,7 +20,6 @@ import { validateSignUp } from "@/utils/form-validations";
 import { signup } from "@/utils/user-api";
 
 const initialState = {
-  username: "",
   email: "",
   password: "",
 };
@@ -45,16 +44,14 @@ export default function SignIn() {
     createUser
   );
 
-  const { username, email, password } =
-    values;
+  const { email, password } = values;
 
   async function createUser() {
     setSubmitting(true);
     try {
       const user = await signup(
         email,
-        password,
-        username
+        password
       );
       if (user) {
         setCookie("user", user);
@@ -70,14 +67,6 @@ export default function SignIn() {
   }
 
   const fields = [
-    {
-      name: "username",
-      type: "text",
-      label: "Username",
-      placeholder: "Enter Username",
-      value: username,
-      error: errors.username,
-    },
     {
       name: "email",
       type: "email",

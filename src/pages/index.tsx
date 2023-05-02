@@ -136,7 +136,7 @@ export default function Home() {
             <DefaultMessage message="No pokemons found" />
           )}
           {filteredPokemons.length >
-            0 && (
+            PAGE_SIZE - 1 && (
             <Pagination
               type={filters.type}
               generation={

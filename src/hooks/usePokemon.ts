@@ -93,12 +93,15 @@ export default function usePokemon() {
 
   const getRandomPokemon = async () => {
     setLoading(true);
+    const min = 1;
     const randomIndex = Math.floor(
       Math.random() *
-        generations[
+        (generations[
           generations.length - 1
         ].limit -
-        1
+          min +
+          1) +
+        min
     );
     const randomPokemon =
       await getPokemonData(randomIndex);

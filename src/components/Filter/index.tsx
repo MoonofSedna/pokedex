@@ -40,6 +40,12 @@ export default function Filter({
   const onSearch = async (
     search: string
   ) => {
+    if (!search) {
+      store.dispatch(
+        updateFilteredPokemons(pokemons)
+      );
+      return;
+    }
     const getPokemons =
       await getPokemonByName(search);
     store.dispatch(

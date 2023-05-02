@@ -70,8 +70,8 @@ const Container = styled.div`
   & .pokemon-image {
     width: 100%;
     height: auto !important;
-    max-height: 500px;
-    max-width: 500px;
+    max-height: 420px;
+    max-width: 400px;
     transition: 0.8s ease-in-out;
     filter: drop-shadow(
       1px 10px 17px rgba(0, 0, 0, 0.4)
@@ -152,6 +152,7 @@ const CardContent = styled.div`
     color: var(--white);
     font-size: 18px;
     padding: 1.5rem 0;
+    font-weight: 600;
   }
 
   & .pokemon-types {
