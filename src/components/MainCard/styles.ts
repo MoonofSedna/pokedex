@@ -58,15 +58,6 @@ const Container = styled.div`
     background-position: 300% -100px;
     background-size: 120%;
   }
-  & > img {
-    margin: 1rem 0 0 1rem;
-    cursor: pointer;
-    transition: 0.5s ease-in-out;
-    &:hover {
-      transform: scale(1.1);
-      transition: 0.5s ease-in-out;
-    }
-  }
   & .pokemon-image {
     width: 100%;
     height: auto !important;
@@ -159,9 +150,7 @@ const CardContent = styled.div`
     display: flex;
     justify-content: flex-start;
     align-items: center;
-    & > div {
-      margin-right: 0.5rem;
-    }
+    gap: 7px;
   }
 
   & > a {

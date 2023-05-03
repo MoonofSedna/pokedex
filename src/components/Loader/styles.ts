@@ -27,7 +27,7 @@ export const Loader = styled.div`
     display: block;
     height: 5rem;
     width: 5rem;
-    border: 0.6em solid #fb6c6c;
+    border: 0.6em solid var(--red);
     border-radius: 100%;
     margin-bottom: 10px;
     clip-path: polygon(

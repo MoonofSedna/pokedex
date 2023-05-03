@@ -1,3 +1,4 @@
+import { memo } from "react";
 // components
 import Icon from "../Icon";
 // utils
@@ -12,7 +13,7 @@ interface BadgeProps {
   selectedType?: string;
 }
 
-export default function Badge({
+function Badge({
   children,
   type,
   onClick,
@@ -22,6 +23,9 @@ export default function Badge({
     <C.Badge
       background={colorType[type]}
       onClick={onClick}
+      className={
+        selectedType ? "selected" : ""
+      }
     >
       {colorType[type] && (
         <Icon
@@ -36,6 +40,7 @@ export default function Badge({
           color={colorType[type]}
         >
           <input
+            id={type}
             checked={
               selectedType === type
             }
@@ -44,9 +49,11 @@ export default function Badge({
             }}
             type="radio"
           />
-          <label className="radio-label"></label>
+          <span className="radio-label" />
         </C.RadioButton>
       )}
     </C.Badge>
   );
 }
+
+export default memo(Badge);

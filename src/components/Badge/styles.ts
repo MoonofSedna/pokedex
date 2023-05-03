@@ -1,8 +1,11 @@
 import styled from "styled-components";
 
-const Badge = styled.div<{
+const Badge = styled.label<{
   background: string;
 }>`
+  &.selected {
+    cursor: pointer;
+  }
   display: flex;
   align-items: center;
   justify-content: center;
@@ -16,7 +19,7 @@ const Badge = styled.div<{
   text-align: center;
   vertical-align: baseline;
   border-radius: 0.3rem;
-  color: #fff;
+  color: var(--white);
   padding: 0.5rem 0.6rem;
   background-color: ${(props) =>
     props.background};

@@ -131,14 +131,8 @@ export default function Favorites() {
 }
 
 export async function getServerSideProps({
-  res,
   req,
 }: GetServerSidePropsContext) {
-  res.setHeader(
-    "Cache-Control",
-    "public, s-maxage=10, stale-while-revalidate=59"
-  );
-
   const { user } = req.cookies;
   if (!user) {
     return {

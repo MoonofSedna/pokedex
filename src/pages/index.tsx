@@ -6,6 +6,8 @@ import Card from "@/components/Card";
 import Filter from "@/components/Filter";
 import Breadcrumb from "@/components/Breadcrumb";
 import Pagination from "@/components/Pagination";
+import Loader from "@/components/Loader";
+import DefaultMessage from "@/components/DefaultMessage";
 // interfaces
 import { Pokemon } from "@/interfaces/pokemon";
 // hooks
@@ -18,9 +20,6 @@ import store, {
 import { updateFilteredPokemons } from "@/store/slices/pokemons";
 // utils
 import { PAGE_SIZE } from "@/utils/constant";
-import DefaultMessage from "@/components/DefaultMessage";
-import Loader from "@/components/Loader";
-import { GetServerSidePropsContext } from "next";
 
 export default function Home() {
   const {
@@ -159,17 +158,4 @@ export default function Home() {
       )}
     </>
   );
-}
-
-export async function getServerSideProps({
-  res,
-}: GetServerSidePropsContext) {
-  res.setHeader(
-    "Cache-Control",
-    "public, s-maxage=10, stale-while-revalidate=59"
-  );
-
-  return {
-    props: {},
-  };
 }

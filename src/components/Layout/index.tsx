@@ -17,6 +17,11 @@ export default function Layout({
       <GlobalStyles />
       <Head>
         <title>Pokedex</title>
+        <meta
+          name="description"
+          content="Author: Bethania C Troconis,
+          email: bethanyctg@gmail.com"
+        />
       </Head>
       <Header />
       <C.AppContainer>

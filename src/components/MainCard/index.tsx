@@ -1,4 +1,4 @@
-import { useRouter } from "next/router";
+import { memo } from "react";
 import Image from "next/image";
 import Link from "next/link";
 // components
@@ -21,19 +21,16 @@ interface MainCardProps {
   user?: User | null;
 }
 
-export default function MainCard({
+function MainCard({
   header,
   pokemon,
   footer,
   user,
 }: MainCardProps) {
-  const router = useRouter();
-
   const isFavorite =
     user?.favorites.find(
       (fav) => +fav === pokemon.id
     );
-
   const pokemonType = pokemon.types[0]
     .type
     .name as keyof typeof colorType;
@@ -50,14 +47,6 @@ export default function MainCard({
       />
       {!header && (
         <>
-          <Icon
-            onClick={() => {
-              router.back();
-            }}
-            name="back"
-            width={40}
-            height={40}
-          />
           {user && (
             <LikeButton
               className={`header ${
@@ -140,3 +129,5 @@ export default function MainCard({
     </C.Container>
   );
 }
+
+export default memo(MainCard);

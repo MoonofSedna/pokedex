@@ -3,7 +3,7 @@ import styled from "styled-components";
 const Generations = styled.div`
   width: 90%;
   display: grid;
-  gap: 1rem;
+  gap: 12px;
   padding: 1.5rem 0;
   grid-template-columns: repeat(
     auto-fit,
@@ -29,7 +29,7 @@ const Generations = styled.div`
 const Types = styled.div`
   width: 100%;
   display: grid;
-  gap: 1rem;
+  gap: 12px;
   padding: 1.5rem 0;
   grid-template-columns: repeat(
     auto-fill,
