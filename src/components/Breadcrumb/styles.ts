@@ -19,7 +19,9 @@ export const Breadcrumb = styled.div`
       --transparent-white
     );
     padding: 0.5rem 0.6rem;
-    border-radius: 0.5rem;
+    border-radius: var(
+      --badge-border-radius
+    );
     color: var(--white);
   }
 `;

@@ -42,7 +42,9 @@ const Container = styled.div`
   display: flex;
   position: relative;
   flex-direction: column;
-  border-radius: 20px;
+  border-radius: var(
+    --card-border-radius
+  );
   overflow: hidden;
   &::before {
     content: "";

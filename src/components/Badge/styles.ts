@@ -18,7 +18,9 @@ const Badge = styled.label<{
   font-weight: var(--bold);
   text-align: center;
   vertical-align: baseline;
-  border-radius: 0.3rem;
+  border-radius: var(
+    --badge-border-radius
+  );
   color: var(--white);
   padding: 0.5rem 0.6rem;
   background-color: ${(props) =>

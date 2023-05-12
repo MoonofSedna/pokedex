@@ -14,6 +14,7 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
 `;
+
 const PokemonStats = styled.div`
   width: 100%;
   padding: 2.5rem 4.5rem 2.5rem 2.5rem;

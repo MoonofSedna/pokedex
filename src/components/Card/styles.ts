@@ -43,7 +43,9 @@ const CardContainer = styled.div`
   position: relative;
   flex-direction: column;
   align-items: center;
-  border-radius: 1rem;
+  border-radius: var(
+    --card-border-radius
+  );
   overflow: hidden;
   opacity: 1;
   animation: ${fade} 1s linear;

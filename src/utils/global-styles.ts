@@ -10,6 +10,8 @@ const GlobalStyles = createGlobalStyle`
         --white: #f9f9f9;
         --fira-sans: 'Fira Sans', sans-serif;
         --search-btn-border-radius: 0 30px 30px 0;
+        --card-border-radius: 10px;
+        --badge-border-radius: 5px;
         --transparent-white: rgba(187, 187, 187, 0.22);
         --transparent-font-color: rgba(255, 255, 255, 0.38);
         --btn-box-shadow: 0px 5px 12px 0px rgba(0, 0, 0, 0.5);
