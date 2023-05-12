@@ -5,7 +5,7 @@
 ============================================================== \
 \
 \
-A Pokedex created with [NextJS](https://nextjs.org/), [Typescript](https://www.typescriptlang.org/), [Styled Components](https://styled-components.com/), [PokeAPI](https://pokeapi.co/docs/v2 "PokeAPI"), and [SheetDB.io](https://sheetdb.io/). >>>> [Deploy](https://sedna-pokedex.netlify.app/pokemon/8).
+A Pokedex created with [NextJS](https://nextjs.org/), [Typescript](https://www.typescriptlang.org/), [Styled Components](https://styled-components.com/), [PokeAPI](https://pokeapi.co/docs/v2 "PokeAPI"), and [SheetDB.io](https://sheetdb.io/). >>>> [Deploy](https://sedna-pokedex.netlify.app).
 \
 \
 ![image](https://user-images.githubusercontent.com/60520922/235581125-55b0ec4e-43e9-4663-b4b3-034910965684.png)
