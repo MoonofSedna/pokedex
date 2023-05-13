@@ -3,7 +3,7 @@ import {
   ChangeEvent,
 } from "react";
 // interfaces
-import { Validation } from "@/interfaces/form";
+import { Validation } from "../interfaces/components";
 
 export default function useValidation(
   initialState: Validation,

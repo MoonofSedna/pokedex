@@ -1,17 +1,11 @@
 // icons
 import Heart from "@/assets/icons/heart";
 // interfaces
-import { User } from "@/interfaces/user";
+import { LikeButtonProps } from "@/interfaces/components";
 // styles
 import * as C from "./styles";
 // utils
-import { addToFav } from "@/utils/add-to-fav";
-
-interface LikeButtonProps {
-  user: User;
-  pokemon: number;
-  className?: string;
-}
+import { addToFav } from "@/utils/functions/add-to-fav";
 
 export default function LikeButton({
   user,

@@ -1,4 +1,8 @@
-import store from "@/store";
+import { RootState } from "@/store";
+import {
+  useDispatch,
+  useSelector,
+} from "react-redux";
 import { deleteCookie } from "cookies-next";
 import Link from "next/link";
 import Image from "next/image";
@@ -12,12 +16,15 @@ import Logo from "@/assets/images/logo.png";
 
 export default function Navbar() {
   const router = useRouter();
-  const { user } =
-    store.getState().user;
+  const dispatch = useDispatch();
+
+  const { user } = useSelector(
+    (state: RootState) => state.user
+  );
 
   const signOut = () => {
     router.push("/");
-    store.dispatch(logout());
+    dispatch(logout());
     deleteCookie("user");
   };
 

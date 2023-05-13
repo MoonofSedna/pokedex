@@ -1,4 +1,3 @@
-import { useSelector } from "react-redux";
 // components
 import MainCard from "@/components/MainCard";
 import PokemonCard from "@/components/PokemonCard";
@@ -6,16 +5,15 @@ import PokemonCard from "@/components/PokemonCard";
 import {
   Pokemon,
   PokemonFullData,
+  Type,
 } from "@/interfaces/pokemon";
-// store
-import { RootState } from "@/store";
 // utils
-import { getImageURL } from "@/utils/get-image-url";
+import { getImageURL } from "@/utils/functions/get-image-url";
 import {
   fetchPokemonEvolution,
   getPokemonData,
   getPokemonDescription,
-} from "@/utils/poke-api";
+} from "@/utils/api/poke-api";
 
 interface PokemonProps {
   pokemon: PokemonFullData;
@@ -24,12 +22,8 @@ interface PokemonProps {
 export default function Pokemon({
   pokemon,
 }: PokemonProps) {
-  const { user } = useSelector(
-    (state: RootState) => state.user
-  );
   return (
     <MainCard
-      user={user}
       pokemon={pokemon}
       footer={
         <PokemonCard
@@ -63,6 +57,9 @@ export async function getServerSideProps(
       pokemon: {
         ...pokemon,
         description,
+        types: pokemon.types.map(
+          (type: Type) => type.type.name
+        ),
         img: getImageURL(pokemon.id),
         evolutions,
       },

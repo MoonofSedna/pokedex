@@ -13,12 +13,12 @@ import DefaultMessage from "@/components/DefaultMessage";
 import { Pagination } from "@/components/Pagination/styles";
 import Button from "@/components/Button";
 // hooks
-import usePokemon from "@/hooks/usePokemon";
+import useRandomPokemon from "@/hooks/useRandomPokemon";
 // interfaces
 import { Pokemon } from "@/interfaces/pokemon";
 // utils
-import { getPokemonData } from "@/utils/poke-api";
-import { sortData } from "@/utils/sort-pokemon-data";
+import { getPokemonData } from "@/utils/api/poke-api";
+import { sortData } from "@/utils/functions/sort-pokemon-data";
 // icons
 import Heart from "@/assets/icons/heart";
 
@@ -26,8 +26,10 @@ export default function Favorites() {
   const { user } = useSelector(
     (state: any) => state.user
   );
-  const { randomPokemon, loading } =
-    usePokemon();
+  const {
+    randomPokemon,
+    randomPokemonLoading,
+  } = useRandomPokemon();
   const [pokemons, setPokemons] =
     useState<Pokemon[]>([]);
   const [pagination, setPagination] =
@@ -83,8 +85,8 @@ export default function Favorites() {
     setPokemons([...nextPokemons]);
   };
 
-  return loading ? (
-    <Loader />
+  return randomPokemonLoading ? (
+    <Loader fullScreen />
   ) : (
     <>
       <MainCard
@@ -103,7 +105,6 @@ export default function Favorites() {
           {pokemons.map(
             (pokemon: Pokemon) => (
               <Card
-                user={user}
                 key={pokemon.id}
                 pokemon={pokemon}
               />

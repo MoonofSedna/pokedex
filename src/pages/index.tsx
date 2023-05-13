@@ -11,89 +11,63 @@ import DefaultMessage from "@/components/DefaultMessage";
 // interfaces
 import { Pokemon } from "@/interfaces/pokemon";
 // hooks
-import usePokemon from "@/hooks/usePokemon";
+import useRandomPokemon from "@/hooks/useRandomPokemon";
 // store
-import store, {
-  RootState,
-} from "@/store";
-// slices
-import { updateFilteredPokemons } from "@/store/slices/pokemons";
+import { RootState } from "@/store";
 // utils
 import { PAGE_SIZE } from "@/utils/constant";
+import {
+  useCallback,
+  useEffect,
+  useState,
+} from "react";
+import usePagination from "@/hooks/usePagination";
+import { fetchPokemons } from "@/utils/functions/fetch-pokemons";
 
 export default function Home() {
+  const [loading, setLoading] =
+    useState<boolean>(false);
+
   const {
+    pokemonsByType,
     pokemons,
-    filteredPokemons,
     filters,
   } = useSelector(
     (state: RootState) => state.pokemons
   );
 
-  const { user } = useSelector(
-    (state: RootState) => state.user
-  );
-
   const {
     randomPokemon,
-    loading,
-    fetchPokemons,
-  } = usePokemon();
+    randomPokemonLoading,
+  } = useRandomPokemon();
 
-  const onPageChange = () => {
-    const page = Math.floor(
-      filteredPokemons.length /
-        PAGE_SIZE
-    );
+  const {
+    paginationLoading,
+    onPageChange,
+    onPaginateByType,
+  } = usePagination();
 
-    const limit =
-      filters.generation.limit;
-
-    const getLimit =
-      (page + 1) * PAGE_SIZE < limit
-        ? (page + 1) * PAGE_SIZE
-        : limit;
-
-    const getOffset =
-      filters.generation.offset;
-
-    fetchPokemons(
-      getOffset,
-      getLimit,
+  const getPokemonData =
+    useCallback(() => {
+      fetchPokemons(
+        filters.generation.offset,
+        PAGE_SIZE,
+        filters.type,
+        filters.generation
+      );
+    }, [
+      filters.generation,
       filters.type,
-      filters.generation
-    );
-  };
+    ]);
 
-  const onPaginateByType = () => {
-    const page = Math.floor(
-      filteredPokemons.length /
-        PAGE_SIZE
-    );
-
-    const limit = pokemons.length;
-
-    const getLimit =
-      (page + 1) * PAGE_SIZE < limit
-        ? (page + 1) * PAGE_SIZE
-        : limit;
-
-    const getOffset = 0;
-
-    const filtered = pokemons.slice(
-      getOffset,
-      getLimit
-    );
-
-    store.dispatch(
-      updateFilteredPokemons(filtered)
-    );
-  };
+  useEffect(() => {
+    getPokemonData();
+  }, [getPokemonData]);
 
   return (
     <>
-      {loading ? (
-        <Loader />
+      {randomPokemonLoading ? (
+        <Loader fullScreen />
       ) : (
         <>
           <MainCard
@@ -103,9 +77,11 @@ export default function Home() {
             }
             footer={
               <Filter
-                fetchPokemons={
-                  fetchPokemons
-                }
+                setLoading={(
+                  isLoading
+                ) => {
+                  setLoading(isLoading);
+                }}
               />
             }
           />
@@ -114,18 +90,16 @@ export default function Home() {
               filters.generation
             }
             type={filters.type}
-            filteredPokemons={
-              filteredPokemons.length
-            }
             pokemons={pokemons.length}
+            pokemonsByType={
+              pokemonsByType.length
+            }
           />
-          {filteredPokemons.length >
-          0 ? (
-            <CardGrid>
-              {filteredPokemons.map(
+          {pokemons.length > 0 ? (
+            <CardGrid loading={loading}>
+              {pokemons.map(
                 (pokemon: Pokemon) => (
                   <Card
-                    user={user}
                     key={pokemon.id}
                     pokemon={pokemon}
                   />
@@ -135,25 +109,31 @@ export default function Home() {
           ) : (
             <DefaultMessage message="No pokemons found" />
           )}
-          {filteredPokemons.length >
-            PAGE_SIZE - 1 && (
-            <Pagination
-              type={filters.type}
-              generation={
-                filters.generation
-              }
-              pokemons={pokemons.length}
-              filteredPokemons={
-                filteredPokemons.length
-              }
-              onPageChange={
-                onPageChange
-              }
-              onPaginateByType={
-                onPaginateByType
-              }
-            />
-          )}
+          {!loading &&
+            pokemons.length >
+              PAGE_SIZE - 1 && (
+              <Pagination
+                type={filters.type}
+                generation={
+                  filters.generation
+                }
+                pokemons={
+                  pokemons.length
+                }
+                pokemonsByType={
+                  pokemonsByType.length
+                }
+                onPageChange={
+                  onPageChange
+                }
+                onPaginateByType={
+                  onPaginateByType
+                }
+                loading={
+                  paginationLoading
+                }
+              />
+            )}
         </>
       )}
     </>

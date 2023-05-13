@@ -2,13 +2,10 @@ import Button from "../Button";
 import { useState } from "react";
 // components
 import Icon from "../Icon";
+// interfaces
+import { SearchBarProps } from "@/interfaces/components";
 // styles
 import * as C from "./styles";
-
-interface SearchBarProps {
-  onSearch: (search: string) => void;
-  clearSearch: () => void;
-}
 
 export default function SearchBar({
   onSearch,

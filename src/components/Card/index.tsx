@@ -1,29 +1,24 @@
 import { memo } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { RootState } from "@/store";
+import { useSelector } from "react-redux";
 // components
 import Badge from "../Badge/Badge";
 import LikeButton from "../LikeButton";
 // interfaces
-import { Pokemon } from "@/interfaces/pokemon";
-import { User } from "@/interfaces/user";
+import { CardProps } from "@/interfaces/components";
 // utils
-import { colorType } from "@/utils/color-type";
+import { pokemonTypes } from "@/utils/pokemon-types";
 // styles
 import * as C from "./styles";
 
-interface CardProps {
-  pokemon: Pokemon;
-  user: User | null;
-}
+function Card({ pokemon }: CardProps) {
+  const { user } = useSelector(
+    (state: RootState) => state.user
+  );
 
-function Card({
-  pokemon,
-  user,
-}: CardProps) {
-  const pokemonType = pokemon.types[0]
-    .type
-    .name as keyof typeof colorType;
+  const pokemonType = pokemon.types[0];
 
   const isFavorite =
     user?.favorites.find(
@@ -34,7 +29,7 @@ function Card({
     <C.CardContainer>
       <C.Overlay
         background={
-          colorType[pokemonType]
+          pokemonTypes[pokemonType]
         }
       />
       <C.CardBody>
@@ -77,7 +72,7 @@ function Card({
       </C.CardBody>
       <C.CardFooter
         background={
-          colorType[pokemonType]
+          pokemonTypes[pokemonType]
         }
       >
         <Link
@@ -87,14 +82,9 @@ function Card({
             {pokemon.types.map(
               (type) => (
                 <Badge
-                  key={type.type.name}
-                  type={
-                    type.type
-                      .name as keyof typeof colorType
-                  }
-                >
-                  {type.type.name}
-                </Badge>
+                  key={type}
+                  type={type}
+                />
               )
             )}
           </div>

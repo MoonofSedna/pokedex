@@ -2,16 +2,15 @@ import Head from "next/head";
 import GlobalStyles from "@/utils/global-styles";
 // components
 import Header from "../Header";
+// interfaces
+import { LayoutProps } from "@/interfaces/components";
 // styles
 import * as C from "./styles";
 
 export default function Layout({
   className,
   children,
-}: {
-  className?: string;
-  children: React.ReactNode;
-}) {
+}: LayoutProps) {
   return (
     <C.Container className={className}>
       <GlobalStyles />

@@ -13,6 +13,7 @@ body {
 
 body {
   background-color: #1e213a;
+  overflow-anchor: none;
 }
 
 body::-webkit-scrollbar {

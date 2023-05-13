@@ -1,48 +1,38 @@
 import { createSlice } from "@reduxjs/toolkit";
 // interfaces
-import { Pokemon } from "@/interfaces/pokemon";
+import { PokemonSlice } from "@/interfaces/redux-slices";
 // utils
-import { generations } from "@/utils/generations";
+import {
+  DEFAULT_GENERATION,
+  DEFAULT_TYPE,
+} from "@/utils/constant";
 
-interface PokemonsState {
-  pokemons: Pokemon[];
-  filteredPokemons: Pokemon[];
-  filters: {
-    type: string;
-    generation: (typeof generations)[0];
-  };
-}
-
-const initialState = {
+const initialState: PokemonSlice = {
+  pokemonsByType: [],
   pokemons: [],
-  filteredPokemons: [],
   filters: {
-    type: "all",
-    generation:
-      generations[
-        generations.length - 1
-      ],
+    type: DEFAULT_TYPE,
+    generation: DEFAULT_GENERATION,
   },
 };
 
 export const PokemonsSlice =
   createSlice({
     name: "pokemons",
-    initialState:
-      initialState as PokemonsState,
+    initialState: initialState,
     reducers: {
-      savePokemonList: (
+      updatePokemonsByType: (
+        state,
+        action
+      ) => {
+        state.pokemonsByType =
+          action.payload;
+      },
+      updatePokemonList: (
         state,
         action
       ) => {
         state.pokemons = action.payload;
-      },
-      updateFilteredPokemons: (
-        state,
-        action
-      ) => {
-        state.filteredPokemons =
-          action.payload;
       },
       updateFilters: (
         state,
@@ -56,7 +46,7 @@ export const PokemonsSlice =
 export default PokemonsSlice.reducer;
 
 export const {
-  savePokemonList,
-  updateFilteredPokemons,
+  updatePokemonsByType,
+  updatePokemonList,
   updateFilters,
 } = PokemonsSlice.actions;

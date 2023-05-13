@@ -1,15 +1,7 @@
+// interfaces
+import { ButtonProps } from "@/interfaces/components";
 // styles
 import * as C from "./styles";
-
-interface ButtonProps {
-  children: React.ReactNode;
-  width?: string;
-  search?: boolean;
-  type?: "button" | "submit" | "reset";
-  onClick?: () => void;
-  className?: string;
-  disabled?: boolean;
-}
 
 export default function Button({
   children,

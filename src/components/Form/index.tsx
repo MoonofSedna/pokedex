@@ -1,22 +1,9 @@
 // components
 import Button from "../Button";
 // interfaces
-import { FormFields } from "@/interfaces/form";
+import { FormProps } from "@/interfaces/components";
 // styles
 import * as C from "./styles";
-
-interface FormProps {
-  fields: FormFields[];
-  error?: string | null;
-  handleChange: (
-    e: React.ChangeEvent<HTMLInputElement>
-  ) => void;
-  handleSubmit: (
-    e: React.FormEvent<HTMLFormElement>
-  ) => void;
-  buttonText: string;
-  submitting: boolean;
-}
 
 export default function Form({
   fields,

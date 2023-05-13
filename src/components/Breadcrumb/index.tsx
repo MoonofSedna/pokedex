@@ -1,26 +1,19 @@
 // interfaces
-import { Generation } from "@/interfaces/pokemon";
+import { BreadcrumbProps } from "@/interfaces/components";
 // styles
 import * as C from "./styles";
-
-interface BreadcrumbProps {
-  generation: Generation;
-  type: string;
-  filteredPokemons: number;
-  pokemons: number;
-}
 
 export default function Breadcrumb({
   generation,
   type,
-  filteredPokemons,
+  pokemonsByType,
   pokemons,
 }: BreadcrumbProps) {
-  const pokemonsInScreen = `${filteredPokemons
+  const pokemonsInScreen = `${pokemons
     .toString()
     .padStart(1, "0")}`;
 
-  const totalPokemons = `${pokemons
+  const totalPokemons = `${pokemonsByType
     .toString()
     .padStart(1, "0")}`;
 

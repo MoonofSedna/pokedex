@@ -1,12 +1,14 @@
-import { Pokemon } from "@/interfaces/pokemon";
 import axios, {
   AxiosInstance,
   AxiosResponse,
 } from "axios";
+// interfaces
+import { Pokemon } from "@/interfaces/pokemon";
 // utils
-import { generations } from "./generations";
-import { parseEvolutionChain } from "./parse-evolution-chain";
-import { sortData } from "./sort-pokemon-data";
+import { generations } from "../generations";
+import { parseEvolutionChain } from "../functions/parse-evolution-chain";
+import { sortData } from "../functions/sort-pokemon-data";
+import { PAGE_SIZE } from "../constant";
 
 const BASE_URL =
   "https://pokeapi.co/api/v2/";
@@ -90,32 +92,47 @@ export const fetchPokemonByType =
       `type/${type}`
     );
 
+    const pokemonsId: number[] =
+      data.pokemon.map((data: any) =>
+        parseInt(
+          data.pokemon.url.match(
+            /\/(\d+)\//
+          )[1]
+        )
+      );
+
+    const filterTypeByGeneration =
+      pokemonsId.filter(
+        (pokemonId: number) =>
+          pokemonId >
+            generation.offset &&
+          pokemonId <=
+            generation.limit +
+              generation.offset
+      );
+
+    const selectedPokemons =
+      filterTypeByGeneration.slice(
+        0,
+        PAGE_SIZE
+      );
+
     const typeList = await Promise.all(
-      data.pokemon.map(
-        async (data: {
-          pokemon: Pokemon;
-        }) => {
+      selectedPokemons.map(
+        async (pokemon: number) => {
           const pokemonData =
             await getPokemonData(
-              data.pokemon.name
+              pokemon
             );
           return sortData(pokemonData);
         }
       )
     );
 
-    const filterTypeByGeneration =
-      typeList.filter(
-        (pokemon: Pokemon) =>
-          pokemon &&
-          pokemon.id >
-            generation.offset &&
-          pokemon.id <=
-            generation.limit +
-              generation.offset
-      );
-
-    return filterTypeByGeneration;
+    return {
+      total: filterTypeByGeneration,
+      pokemons: typeList,
+    };
   };
 
 export const getPokemonByName = async (

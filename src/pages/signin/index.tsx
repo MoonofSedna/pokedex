@@ -8,7 +8,7 @@ import Form from "@/components/Form";
 import MainCard from "@/components/MainCard";
 import Loader from "@/components/Loader";
 // hooks
-import usePokemon from "@/hooks/usePokemon";
+import useRandomPokemon from "@/hooks/useRandomPokemon";
 import useValidation from "@/hooks/useValidation";
 // interfaces
 import { Pokemon } from "@/interfaces/pokemon";
@@ -17,7 +17,7 @@ import store from "@/store";
 import { setUser } from "@/store/slices/user";
 // utils
 import { validateSignUp } from "@/utils/form-validations";
-import { signup } from "@/utils/user-api";
+import { signup } from "@/utils/api/user-api";
 
 const initialState = {
   email: "",
@@ -30,8 +30,10 @@ export default function SignIn() {
   const [submitting, setSubmitting] =
     useState(false);
 
-  const { randomPokemon, loading } =
-    usePokemon();
+  const {
+    randomPokemon,
+    randomPokemonLoading,
+  } = useRandomPokemon();
 
   const {
     values,
@@ -86,8 +88,8 @@ export default function SignIn() {
     },
   ];
 
-  return loading ? (
-    <Loader />
+  return randomPokemonLoading ? (
+    <Loader fullScreen />
   ) : (
     <MainCard
       header

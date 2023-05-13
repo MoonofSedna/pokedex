@@ -1,39 +1,36 @@
 import { memo } from "react";
 import Image from "next/image";
+import { useRouter } from "next/router";
 import Link from "next/link";
+import { RootState } from "@/store";
+import { useSelector } from "react-redux";
 // components
 import Icon from "../Icon";
 import Badge from "../Badge/Badge";
 import Button from "../Button";
 import LikeButton from "../LikeButton";
 // interfaces
-import { Pokemon } from "@/interfaces/pokemon";
-import { User } from "@/interfaces/user";
+import { MainCardProps } from "@/interfaces/components";
 // utils
-import { colorType } from "@/utils/color-type";
+import { pokemonTypes } from "@/utils/pokemon-types";
 // styles
 import * as C from "./styles";
-
-interface MainCardProps {
-  header?: boolean;
-  pokemon: Pokemon;
-  footer: React.ReactNode;
-  user?: User | null;
-}
 
 function MainCard({
   header,
   pokemon,
   footer,
-  user,
 }: MainCardProps) {
+  const router = useRouter();
+  const { user } = useSelector(
+    (state: RootState) => state.user
+  );
+
   const isFavorite =
     user?.favorites.find(
       (fav) => +fav === pokemon.id
     );
-  const pokemonType = pokemon.types[0]
-    .type
-    .name as keyof typeof colorType;
+  const pokemonType = pokemon.types[0];
 
   const weight = pokemon.weight / 10;
   const height = pokemon.height / 10;
@@ -42,11 +39,19 @@ function MainCard({
     <C.Container>
       <C.Overlay
         background={
-          colorType[pokemonType]
+          pokemonTypes[pokemonType]
         }
       />
       {!header && (
         <>
+          <Icon
+            onClick={() => {
+              router.back();
+            }}
+            name="back"
+            width={40}
+            height={40}
+          />
           {user && (
             <LikeButton
               className={`header ${
@@ -74,14 +79,9 @@ function MainCard({
             {pokemon.types.map(
               (type) => (
                 <Badge
-                  key={type.type.name}
-                  type={
-                    type.type
-                      .name as keyof typeof colorType
-                  }
-                >
-                  {type.type.name}
-                </Badge>
+                  key={type}
+                  type={type}
+                />
               )
             )}
           </div>

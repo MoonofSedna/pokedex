@@ -5,15 +5,12 @@ import Link from "next/link";
 import Icon from "../Icon";
 import DefaultMessage from "../DefaultMessage";
 // interfaces
-import { PokemonFullData } from "@/interfaces/pokemon";
+import { PokemonCardProps } from "@/interfaces/components";
 // styles
 import * as C from "./styles";
 // utils
 import { formatStats } from "@/utils/format-stats";
 
-interface PokemonCardProps {
-  pokemon: PokemonFullData;
-}
 export default function PokemonCard({
   pokemon,
 }: PokemonCardProps) {
@@ -67,10 +64,7 @@ export default function PokemonCard({
               (evolution) => {
                 return (
                   <C.EvolutionGroup
-                    key={
-                      evolution.current
-                        .id
-                    }
+                    key={`${evolution.current.id} ${evolution.next.id}`}
                   >
                     <C.EvolutionCard>
                       <Link

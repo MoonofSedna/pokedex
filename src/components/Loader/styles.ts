@@ -11,16 +11,17 @@ const spin = keyframes`
     }
 `;
 
-export const Loader = styled.div`
-  height: 100dvh;
-  font-size: 1.2rem;
+export const Loader = styled.div<{
+  fullScreen?: boolean;
+}>`
+  margin-top: ${({ fullScreen }) =>
+    fullScreen ? "40dvh" : "50px"};
   position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 15vh 0;
   flex-direction: column;
-  font-size: 2rem;
+  font-size: 1.5rem;
   color: var(--white);
   &::before {
     content: "";
@@ -51,7 +52,7 @@ export const Loader = styled.div`
     content: "";
     display: block;
     position: absolute;
-    top: 50.2%;
+    top: 46%;
     margin-top: -1.6em;
     height: 3.2rem;
     width: 3.2rem;

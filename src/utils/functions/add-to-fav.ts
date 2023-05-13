@@ -4,7 +4,7 @@ import { setCookie } from "cookies-next";
 // interfaces
 import { User } from "@/interfaces/user";
 // utils
-import { updateUserData } from "./user-api";
+import { updateUserData } from "../api/user-api";
 
 export const addToFav = (
   user: User,
@@ -26,8 +26,8 @@ export const addToFav = (
     );
   } else {
     favList = [
-      ...favList,
       pokemon.toString(),
+      ...favList,
     ];
   }
 

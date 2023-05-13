@@ -1,7 +1,9 @@
+import { pokemonTypes } from "@/utils/pokemon-types";
+
 export interface Pokemon {
   name: string;
   id: number;
-  types: Type[];
+  types: PokemonType[];
   description?: string;
   img: string;
   weight: number;
@@ -25,7 +27,7 @@ export interface PokemonFullData {
   species: Species;
   sprites: Sprites;
   stats: Stat[];
-  types: Type[];
+  types: PokemonType[];
   weight: number;
   img: string;
   description: string;
@@ -64,6 +66,9 @@ export interface EvolutionData {
     url: string;
   };
 }
+
+export type PokemonType =
+  keyof typeof pokemonTypes;
 
 export interface Evolution {
   id: number;

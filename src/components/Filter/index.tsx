@@ -1,36 +1,38 @@
 import SearchBar from "../SearchBar";
-import store, {
-  RootState,
-} from "@/store";
-import { useSelector } from "react-redux";
+import { RootState } from "@/store";
+import {
+  useDispatch,
+  useSelector,
+} from "react-redux";
 // components
 import Badge from "../Badge/Badge";
 import Button from "../Button";
+// interfaces
+import { FilterProps } from "@/interfaces/components";
+import { PokemonType } from "@/interfaces/pokemon";
+
 // store
 import {
-  updateFilteredPokemons,
+  updatePokemonList,
   updateFilters,
 } from "@/store/slices/pokemons";
 // styles
 import * as C from "./styles";
 // utils
-import { getPokemonByName } from "@/utils/poke-api";
+import { getPokemonByName } from "@/utils/api/poke-api";
 import { generations } from "@/utils/generations";
-import { colorType } from "@/utils/color-type";
-import { PAGE_SIZE } from "@/utils/constant";
-
-interface FilterProps {
-  fetchPokemons: (
-    offet: number,
-    limit: number,
-    type: string,
-    generation: (typeof generations)[0]
-  ) => void;
-}
+import { pokemonTypes } from "@/utils/pokemon-types";
+import {
+  DEFAULT_TYPE,
+  PAGE_SIZE,
+} from "@/utils/constant";
+import { fetchPokemons } from "@/utils/functions/fetch-pokemons";
 
 export default function Filter({
-  fetchPokemons,
+  setLoading,
 }: FilterProps) {
+  const dispatch = useDispatch();
+
   const { filters, pokemons } =
     useSelector(
       (state: RootState) =>
@@ -41,64 +43,87 @@ export default function Filter({
     search: string
   ) => {
     if (!search) {
-      store.dispatch(
-        updateFilteredPokemons(pokemons)
+      dispatch(
+        updatePokemonList(pokemons)
       );
       return;
     }
+
+    setLoading(true);
+
     const getPokemons =
       await getPokemonByName(search);
-    store.dispatch(
-      updateFilteredPokemons(
+
+    dispatch(
+      updatePokemonList(
         getPokemons ? [getPokemons] : []
       )
     );
+    setLoading(false);
   };
 
-  const filterByType = (
+  const filterByType = async (
     type: string
   ) => {
     if (filters.type === type) return;
-    store.dispatch(
+
+    setLoading(true);
+
+    dispatch(
       updateFilters({
         generation: filters.generation,
         type,
       })
     );
-    fetchPokemons(
-      type === "all"
+
+    await fetchPokemons(
+      type === DEFAULT_TYPE
         ? filters.generation.offset
         : 0,
       PAGE_SIZE,
       type,
       filters.generation
     );
+
+    setLoading(false);
   };
 
-  const filterByGeneration = (
+  const filterByGeneration = async (
     gen: (typeof generations)[0]
   ) => {
     if (
       filters.generation.id === gen.id
-    )
+    ) {
       return;
-    store.dispatch(
+    }
+
+    setLoading(true);
+
+    dispatch(
       updateFilters({
         generation: gen,
         type: filters.type,
       })
     );
-    fetchPokemons(
+
+    await fetchPokemons(
       gen.offset,
       PAGE_SIZE,
       filters.type,
       gen
     );
+
+    setLoading(false);
   };
 
   const clearSearch = () => {
-    store.dispatch(
-      updateFilteredPokemons(pokemons)
+    fetchPokemons(
+      filters.type === DEFAULT_TYPE
+        ? filters.generation.offset
+        : 0,
+      PAGE_SIZE,
+      filters.type,
+      filters.generation
     );
   };
 
@@ -129,23 +154,21 @@ export default function Filter({
         ))}
       </C.Generations>
       <C.Types>
-        {Object.keys(colorType).map(
-          (key) => {
+        {Object.keys(pokemonTypes).map(
+          (type) => {
             return (
               <Badge
-                key={key}
+                key={type}
                 type={
-                  key as keyof typeof colorType
+                  type as PokemonType
                 }
                 selectedType={
                   filters.type
                 }
                 onClick={() =>
-                  filterByType(key)
+                  filterByType(type)
                 }
-              >
-                {key}
-              </Badge>
+              />
             );
           }
         )}

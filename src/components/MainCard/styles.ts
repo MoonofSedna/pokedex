@@ -60,10 +60,19 @@ const Container = styled.div`
     background-position: 300% -100px;
     background-size: 120%;
   }
+  & > img {
+    margin: 1rem 0 0 1rem;
+    cursor: pointer;
+    transition: 0.5s ease-in-out;
+    &:hover {
+      transform: scale(1.1);
+      transition: 0.5s ease-in-out;
+    }
+  }
   & .pokemon-image {
     width: 100%;
     height: auto !important;
-    max-height: 420px;
+    max-height: 380px;
     max-width: 400px;
     transition: 0.8s ease-in-out;
     filter: drop-shadow(

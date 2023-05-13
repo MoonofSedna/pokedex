@@ -1,50 +1,49 @@
 // components
 import Button from "../Button";
 // interfaces
-import { Generation } from "@/interfaces/pokemon";
+import { PaginationProps } from "@/interfaces/components";
 // styles
 import * as C from "./styles";
-
-interface PaginationProps {
-  type: string;
-  generation: Generation;
-  pokemons: number;
-  filteredPokemons: number;
-  onPageChange: () => void;
-  onPaginateByType: () => void;
-}
+// utils
+import { DEFAULT_TYPE } from "@/utils/constant";
 
 export default function Pagination({
   type,
   generation,
   pokemons,
-  filteredPokemons,
+  loading,
+  pokemonsByType,
   onPageChange,
   onPaginateByType,
 }: PaginationProps) {
+  const PaginationButton = ({
+    onClick,
+  }: {
+    onClick?: () => void;
+  }) => {
+    return (
+      <Button onClick={onClick}>
+        {loading
+          ? "Loading..."
+          : "Show More"}
+      </Button>
+    );
+  };
+
   return (
     <C.Pagination>
-      {type === "all"
+      {type === DEFAULT_TYPE
         ? generation &&
-          filteredPokemons <
+          pokemons <
             generation.limit && (
-            <Button
-              onClick={() => {
-                onPageChange();
-              }}
-            >
-              Show More
-            </Button>
+            <PaginationButton
+              onClick={onPageChange}
+            />
           )
-        : filteredPokemons <
-            pokemons && (
-            <Button
-              onClick={() => {
-                onPaginateByType();
-              }}
-            >
-              Show More
-            </Button>
+        : pokemons < pokemonsByType && (
+            <PaginationButton
+              onClick={onPaginateByType}
+            />
           )}
     </C.Pagination>
   );

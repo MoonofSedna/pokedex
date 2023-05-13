@@ -30,13 +30,8 @@ import SpDefense from "@/assets/icons/sp.def.svg";
 import Speed from "@/assets/icons/speed.svg";
 import Back from "@/assets/icons/back.svg";
 import Delete from "@/assets/icons/delete.svg";
-
-interface IconProps {
-  name: string;
-  height: number;
-  width: number;
-  onClick?: () => void;
-}
+// interfaces
+import { IconProps } from "@/interfaces/components";
 
 export default function Icon({
   name,

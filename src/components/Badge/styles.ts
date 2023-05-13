@@ -40,7 +40,7 @@ const RadioButton = styled.div<{
   & input {
     position: absolute;
     opacity: 0;
-    + .radio-label {
+    + span {
       &:before {
         content: "";
         background: var(--white);
@@ -60,7 +60,7 @@ const RadioButton = styled.div<{
       }
     }
     &:checked {
-      + .radio-label {
+      + span {
         &:before {
           background-color: ${(props) =>
             props.color};
@@ -70,7 +70,7 @@ const RadioButton = styled.div<{
       }
     }
     &:focus {
-      + .radio-label {
+      + span {
         &:before {
           outline: none;
           border-color: #fff;
@@ -78,7 +78,7 @@ const RadioButton = styled.div<{
       }
     }
     &:disabled {
-      + .radio-label {
+      + span {
         &:before {
           box-shadow: inset 0 0 0 4px
             #fff;
@@ -90,7 +90,7 @@ const RadioButton = styled.div<{
         }
       }
     }
-    + .radio-label {
+    + span {
       &:empty {
         &:before {
           margin-right: 0;

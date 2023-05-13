@@ -8,15 +8,15 @@ import Form from "@/components/Form";
 import MainCard from "@/components/MainCard";
 import Loader from "@/components/Loader";
 // hooks
-import usePokemon from "@/hooks/usePokemon";
+import useRandomPokemon from "@/hooks/useRandomPokemon";
 import useValidation from "@/hooks/useValidation";
 // interfaces
 import { Pokemon } from "@/interfaces/pokemon";
+import { useDispatch } from "react-redux";
 // utils
 import { validateLogIn } from "@/utils/form-validations";
-import { login } from "@/utils/user-api";
+import { login } from "@/utils/api/user-api";
 // store
-import store from "@/store";
 import { setUser } from "@/store/slices/user";
 
 const initialState = {
@@ -26,13 +26,17 @@ const initialState = {
 
 export default function Login() {
   const router = useRouter();
+  const dispatch = useDispatch();
+
   const [error, setError] =
     useState<string>();
   const [submitting, setSubmitting] =
     useState(false);
 
-  const { randomPokemon, loading } =
-    usePokemon();
+  const {
+    randomPokemon,
+    randomPokemonLoading,
+  } = useRandomPokemon();
 
   async function getUser() {
     setSubmitting(true);
@@ -43,7 +47,7 @@ export default function Login() {
       );
       if (user) {
         setCookie("user", user);
-        store.dispatch(setUser(user));
+        dispatch(setUser(user));
         router.push("/");
       }
     } catch (e) {
@@ -86,8 +90,8 @@ export default function Login() {
     },
   ];
 
-  return loading ? (
-    <Loader />
+  return randomPokemonLoading ? (
+    <Loader fullScreen />
   ) : (
     <MainCard
       header

@@ -1,16 +1,15 @@
 // interfaces
-import { Pokemon } from "@/interfaces/pokemon";
+import {
+  Pokemon,
+  Type,
+} from "@/interfaces/pokemon";
 // utils
-import { generations } from "./generations";
+import { generations } from "../generations";
 import { getImageURL } from "./get-image-url";
 
 export const sortData = (
-  pokemonData: Pokemon
+  pokemonData: Pokemon<Type>
 ) => {
-  const image = getImageURL(
-    pokemonData.id
-  );
-
   if (
     pokemonData.id >
     generations[generations.length - 1]
@@ -19,10 +18,18 @@ export const sortData = (
     return;
   }
 
+  const image = getImageURL(
+    pokemonData.id
+  );
+
+  const types = pokemonData.types.map(
+    (type) => type.type.name
+  );
+
   return {
     name: pokemonData.name,
     id: pokemonData.id,
-    types: pokemonData.types,
+    types: types,
     img: image,
     weight: pokemonData.weight,
     height: pokemonData.height,
