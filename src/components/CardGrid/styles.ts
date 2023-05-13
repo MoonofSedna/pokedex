@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 export const CardGrid = styled.div<{
-  isLoading: boolean;
+  isLoading?: boolean;
 }>`
   display: grid;
   position: relative;
