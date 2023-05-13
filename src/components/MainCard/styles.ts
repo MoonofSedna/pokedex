@@ -85,8 +85,8 @@ const Container = styled.div`
     top: 1.5rem;
     right: 30px;
     svg {
-      width: 50px;
-      height: 50px;
+      width: 35px;
+      height: 35px;
     }
   }
   @media screen and (max-width: 600px) {
@@ -104,13 +104,14 @@ const CardBody = styled.div`
   width: 100%;
   height: 100%;
   display: grid;
-  padding: 0 2rem;
+  padding: 0 3rem 1rem 3rem;
   grid-template-columns: repeat(
     auto-fit,
     minmax(300px, 1fr)
   );
   gap: 1rem;
   @media screen and (max-width: 760px) {
+    padding: 0 1.5rem 1rem 1.5rem;
     grid-template-columns: repeat(
       auto-fit,
       minmax(240px, 1fr)
@@ -127,24 +128,31 @@ const CardBody = styled.div`
 `;
 
 const CardContent = styled.div`
-  &:first-of-type {
-    max-width: 450px;
-    padding-left: 3rem;
-  }
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  justify-content: center;
-  padding: 3rem 1.5rem;
   position: relative;
+  &:first-of-type {
+    max-width: 450px;
+    padding: 3rem 3rem 3rem 0;
+  }
+  &:last-of-type {
+    justify-content: center;
+    padding: 3rem 1.5rem;
+  }
   & > span {
-    font-size: clamp(4rem, 5vw, 1.5rem);
+    font-size: clamp(
+      3.5rem,
+      5vw,
+      1.5rem
+    );
     color: var(
       --transparent-font-color
     );
   }
   & h2 {
-    font-size: 3rem;
+    font-size: 2.8rem;
+    padding-bottom: 0.5rem;
     text-transform: uppercase;
     color: #fff;
     width: fit-content;

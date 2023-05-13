@@ -132,7 +132,11 @@ const CardBody = styled.div`
     text-transform: capitalize;
     letter-spacing: 0.05rem;
     padding-bottom: 1rem;
-    font-size: clamp(1.5rem, 2vw, 2rem);
+    font-size: clamp(
+      1.5rem,
+      2vw,
+      1.8rem
+    );
     color: var(--white);
   }
   & img {

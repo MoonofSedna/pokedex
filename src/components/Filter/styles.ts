@@ -14,7 +14,7 @@ const Generations = styled.div`
     border: none;
     border-radius: 30px;
     font-weight: var(--bold);
-    padding: 0.7rem 1.52rem;
+    padding: 0.65rem 1.3rem;
     background-color: var(--white);
     &.active {
       cursor: default;

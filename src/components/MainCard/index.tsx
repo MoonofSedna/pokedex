@@ -121,7 +121,6 @@ function MainCard({
             alt={pokemon.name}
             width={420}
             height={420}
-            quality={50}
             priority
           />
         </C.CardContent>

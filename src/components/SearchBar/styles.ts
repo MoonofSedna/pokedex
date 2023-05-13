@@ -16,12 +16,11 @@ export const Search = styled.div`
     }
     & input {
       width: 100%;
-      padding: 1rem;
+      padding: 0.8rem 1rem;
       border: none;
       border-radius: 30px 0 0 30px;
       outline: none;
       font-size: 1rem;
-      font-weight: 500;
     }
   }
 `;
