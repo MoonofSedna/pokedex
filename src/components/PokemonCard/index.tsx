@@ -90,6 +90,7 @@ export default function PokemonCard({
                             }
                             width={100}
                             height={100}
+                            quality={30}
                           />
                           <span>
                             {
@@ -137,6 +138,7 @@ export default function PokemonCard({
                             }
                             width={100}
                             height={100}
+                            quality={30}
                           />
                           <span>
                             {

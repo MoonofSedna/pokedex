@@ -246,6 +246,7 @@ export default function Icon({
       width={width}
       height={height}
       onClick={onClick}
+      quality={30}
     />
   );
 }

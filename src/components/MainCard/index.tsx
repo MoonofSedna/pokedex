@@ -119,8 +119,9 @@ function MainCard({
             className="pokemon-image"
             src={pokemon.img}
             alt={pokemon.name}
-            width={500}
-            height={500}
+            width={420}
+            height={420}
+            quality={50}
             priority
           />
         </C.CardContent>

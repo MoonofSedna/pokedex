@@ -69,6 +69,7 @@ export default function Navbar() {
             alt="logo"
             width={150}
             height={45}
+            quality={20}
             priority
           />
         </Link>
