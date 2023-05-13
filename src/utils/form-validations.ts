@@ -1,5 +1,5 @@
 // interfaces
-import { Validation } from "@/interfaces/form";
+import { Validation } from "@/interfaces/components";
 
 export const validateLogIn = (
   values: Validation
