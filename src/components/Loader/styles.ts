@@ -11,8 +11,15 @@ const spin = keyframes`
     }
 `;
 
+export const Container = styled.div`
+  height: 90vh;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
 export const Loader = styled.div`
-  height: 100dvh;
   position: relative;
   display: flex;
   align-items: center;
@@ -49,7 +56,7 @@ export const Loader = styled.div`
     content: "";
     display: block;
     position: absolute;
-    top: 49.6%;
+    top: 46%;
     margin-top: -1.6em;
     height: 3.2rem;
     width: 3.2rem;

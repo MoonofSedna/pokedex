@@ -70,6 +70,7 @@ export default function Navbar() {
             width={130}
             height={40}
             quality={20}
+            priority
           />
         </Link>
       </span>
