@@ -10,6 +10,11 @@ export interface Pokemon {
   height: number;
 }
 
+export interface PokemonDefaultData
+  extends Omit<Pokemon, "types"> {
+  types: Type[];
+}
+
 export interface PokemonFullData {
   abilities: Ability[];
   base_experience: number;

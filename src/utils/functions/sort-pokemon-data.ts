@@ -1,14 +1,11 @@
 // interfaces
-import {
-  Pokemon,
-  Type,
-} from "@/interfaces/pokemon";
+import { PokemonDefaultData } from "@/interfaces/pokemon";
 // utils
 import { generations } from "../generations";
 import { getImageURL } from "./get-image-url";
 
 export const sortData = (
-  pokemonData: Pokemon<Type>
+  pokemonData: PokemonDefaultData
 ) => {
   if (
     pokemonData.id >
