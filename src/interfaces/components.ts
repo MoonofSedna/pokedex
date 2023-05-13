@@ -89,10 +89,6 @@ export interface LikeButtonProps {
   className?: string;
 }
 
-export interface LoaderProps {
-  fullScreen?: boolean;
-}
-
 export interface MainCardProps {
   header?: boolean;
   pokemon: Pokemon | PokemonFullData;

@@ -67,7 +67,7 @@ export default function Home() {
   return (
     <>
       {randomPokemonLoading ? (
-        <Loader fullScreen />
+        <Loader />
       ) : (
         <>
           <MainCard

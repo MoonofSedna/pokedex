@@ -86,7 +86,7 @@ export default function Favorites() {
   };
 
   return randomPokemonLoading ? (
-    <Loader fullScreen />
+    <Loader />
   ) : (
     <>
       <MainCard

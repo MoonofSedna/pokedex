@@ -4,7 +4,6 @@ import { Provider } from "react-redux";
 import { Fira_Sans } from "next/font/google";
 // components
 import Layout from "@/components/Layout";
-import Loader from "@/components/Loader";
 // hooks
 import useAuth from "@/hooks/useAuth";
 // store
@@ -25,9 +24,7 @@ export default function App({
 
   return (
     <Provider store={store}>
-      {loading ? (
-        <Loader fullScreen />
-      ) : (
+      {!loading && (
         <Layout
           className={firaSans.className}
         >

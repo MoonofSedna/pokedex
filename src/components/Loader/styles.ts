@@ -11,11 +11,8 @@ const spin = keyframes`
     }
 `;
 
-export const Loader = styled.div<{
-  fullScreen?: boolean;
-}>`
-  margin-top: ${({ fullScreen }) =>
-    fullScreen ? "40dvh" : "50px"};
+export const Loader = styled.div`
+  height: 100dvh;
   position: relative;
   display: flex;
   align-items: center;
@@ -52,7 +49,7 @@ export const Loader = styled.div<{
     content: "";
     display: block;
     position: absolute;
-    top: 46%;
+    top: 49.6%;
     margin-top: -1.6em;
     height: 3.2rem;
     width: 3.2rem;

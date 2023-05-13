@@ -91,7 +91,7 @@ export default function Login() {
   ];
 
   return randomPokemonLoading ? (
-    <Loader fullScreen />
+    <Loader />
   ) : (
     <MainCard
       header

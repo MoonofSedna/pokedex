@@ -67,10 +67,9 @@ export default function Navbar() {
           <Image
             src={Logo}
             alt="logo"
-            width={150}
-            height={45}
+            width={130}
+            height={40}
             quality={20}
-            priority
           />
         </Link>
       </span>

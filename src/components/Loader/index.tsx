@@ -1,14 +1,8 @@
-// interfaces
-import { LoaderProps } from "@/interfaces/components";
 // styles
 import * as C from "./styles";
 
-export default function Loader({
-  fullScreen,
-}: LoaderProps) {
+export default function Loader() {
   return (
-    <C.Loader fullScreen={fullScreen}>
-      Loading...
-    </C.Loader>
+    <C.Loader>Loading...</C.Loader>
   );
 }

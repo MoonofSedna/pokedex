@@ -67,7 +67,6 @@ function Card({ pokemon }: CardProps) {
           alt={pokemon.name}
           width={250}
           height={250}
-          priority
         />
       </C.CardBody>
       <C.CardFooter
