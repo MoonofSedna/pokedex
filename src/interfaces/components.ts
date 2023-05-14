@@ -31,6 +31,7 @@ export interface ButtonProps {
 
 export interface CardProps {
   pokemon: Pokemon;
+  onClick?: (id: number) => void;
 }
 
 export interface CardGridProps {
@@ -43,8 +44,14 @@ export interface DefaultMessageProps {
 }
 
 export interface FilterProps {
+  selectedType: PokemonType;
+  selectedGeneration: Generation;
   setLoading: (
     isLoading: boolean
+  ) => void;
+  updateFilter: (
+    type: PokemonType,
+    generation: Generation
   ) => void;
 }
 
@@ -87,6 +94,7 @@ export interface LikeButtonProps {
   user: User;
   pokemon: number;
   className?: string;
+  onClick?: (id: number) => void;
 }
 
 export interface MainCardProps {

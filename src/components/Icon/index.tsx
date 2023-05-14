@@ -30,6 +30,7 @@ import SpDefense from "@/assets/icons/sp.def.svg";
 import Speed from "@/assets/icons/speed.svg";
 import Back from "@/assets/icons/back.svg";
 import Delete from "@/assets/icons/delete.svg";
+import Spinner from "@/assets/icons/spinner.svg";
 // interfaces
 import { IconProps } from "@/interfaces/components";
 
@@ -43,6 +44,13 @@ export default function Icon({
     string,
     { component: string; alt: string }
   > = new Map([
+    [
+      "spinner",
+      {
+        component: Spinner,
+        alt: "spinner",
+      },
+    ],
     [
       "delete",
       {

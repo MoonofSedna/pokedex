@@ -1,23 +1,20 @@
 import React, { useState } from "react";
-import { setCookie } from "cookies-next";
-import { AxiosError } from "axios";
 import { useRouter } from "next/router";
-import { GetServerSidePropsContext } from "next";
+import { setCookie } from "cookies-next";
+import { FirebaseError } from "firebase/app";
 // components
 import Form from "@/components/Form";
 import MainCard from "@/components/MainCard";
 import Loader from "@/components/Loader";
+// firebase
+import firebase from "../../firebase";
 // hooks
 import useRandomPokemon from "@/hooks/useRandomPokemon";
 import useValidation from "@/hooks/useValidation";
 // interfaces
 import { Pokemon } from "@/interfaces/pokemon";
-import { useDispatch } from "react-redux";
 // utils
 import { validateLogIn } from "@/utils/form-validations";
-import { login } from "@/utils/api/user-api";
-// store
-import { setUser } from "@/store/slices/user";
 
 const initialState = {
   email: "",
@@ -26,7 +23,6 @@ const initialState = {
 
 export default function Login() {
   const router = useRouter();
-  const dispatch = useDispatch();
 
   const [error, setError] =
     useState<string>();
@@ -41,18 +37,21 @@ export default function Login() {
   async function getUser() {
     setSubmitting(true);
     try {
-      const user = await login(
+      const user = await firebase.login(
         email,
         password
       );
-      if (user) {
-        setCookie("user", user);
-        dispatch(setUser(user));
-        router.push("/");
-      }
+
+      setCookie(
+        "user-token",
+        user.refreshToken
+      );
+
+      router.push("/");
     } catch (e) {
-      const error = e as AxiosError;
-      setError(error.message);
+      const { message } =
+        e as FirebaseError;
+      setError(message);
     } finally {
       setSubmitting(false);
     }
@@ -108,21 +107,4 @@ export default function Login() {
       }
     />
   );
-}
-
-export async function getServerSideProps(
-  x: GetServerSidePropsContext
-) {
-  const { user } = x.req.cookies;
-  if (user) {
-    return {
-      redirect: {
-        destination: "/",
-        permanent: false,
-      },
-    };
-  }
-  return {
-    props: {},
-  };
 }

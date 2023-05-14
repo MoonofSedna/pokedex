@@ -178,3 +178,24 @@ export const fetchPokemonEvolution =
 
     return evolutions;
   };
+
+export const getPokemonsById = async (
+  offset: number,
+  limit: number,
+  pokemons: number[]
+) => {
+  const page = pokemons.slice(
+    offset,
+    limit
+  );
+  const data = await Promise.all(
+    page.map(async (pokemon) => {
+      const pokeData =
+        await getPokemonData(pokemon);
+      const formattedData =
+        sortData(pokeData);
+      return formattedData as Pokemon;
+    })
+  );
+  return data;
+};

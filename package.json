@@ -17,6 +17,7 @@
     "cookies-next": "^2.1.1",
     "eslint": "8.39.0",
     "eslint-config-next": "13.3.1",
+    "firebase": "^9.22.0",
     "next": "13.3.1",
     "react": "18.2.0",
     "react-dom": "18.2.0",
@@ -24,6 +25,7 @@
     "styled-components": "^5.3.10"
   },
   "devDependencies": {
+    "@types/firebase": "^3.2.1",
     "@types/google-spreadsheet": "^3.3.1",
     "@types/styled-components": "^5.1.26",
     "typescript": "5.0.4"

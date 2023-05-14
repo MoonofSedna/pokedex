@@ -1,9 +1,9 @@
 import {
   useEffect,
+  useRef,
   useState,
 } from "react";
 import { useSelector } from "react-redux";
-import { GetServerSidePropsContext } from "next";
 // components
 import Card from "@/components/Card";
 import CardGrid from "@/components/CardGrid";
@@ -16,73 +16,110 @@ import Button from "@/components/Button";
 import useRandomPokemon from "@/hooks/useRandomPokemon";
 // interfaces
 import { Pokemon } from "@/interfaces/pokemon";
+// store
+import { RootState } from "@/store";
 // utils
-import { getPokemonData } from "@/utils/api/poke-api";
-import { sortData } from "@/utils/functions/sort-pokemon-data";
+import { getPokemonsById } from "@/utils/api/poke-api";
+import {
+  DEFAULT_GENERATION,
+  PAGE_SIZE,
+} from "@/utils/constant";
 // icons
 import Heart from "@/assets/icons/heart";
 
 export default function Favorites() {
   const { user } = useSelector(
-    (state: any) => state.user
+    (state: RootState) => state.user
   );
+
+  const [pokemons, setPokemons] =
+    useState<Pokemon[]>([]);
+
+  const favsCount =
+    user?.favorites.length ||
+    DEFAULT_GENERATION.offset;
+
+  const cleanUp = useRef(false);
+  const favorites = useRef([
+    ...(user?.favorites || []),
+  ]);
+  const pagination = useRef({
+    offset: DEFAULT_GENERATION.offset,
+    limit: PAGE_SIZE,
+  });
+
   const {
     randomPokemon,
     randomPokemonLoading,
   } = useRandomPokemon();
-  const [pokemons, setPokemons] =
-    useState<Pokemon[]>([]);
-  const [pagination, setPagination] =
-    useState({
-      limit: 6,
-      offset: 0,
-    });
-  const [favorites, setFavorites] =
-    useState<Pokemon[]>([]);
+
+  const fetchPokemons = async (
+    offset: number,
+    limit: number,
+    favorites: number[]
+  ) => {
+    const data = await getPokemonsById(
+      offset,
+      limit,
+      favorites
+    );
+
+    setPokemons((prev) => [
+      ...prev,
+      ...data,
+    ]);
+  };
 
   useEffect(() => {
-    const getPokemons = async () => {
-      const data = await Promise.all(
-        user.favorites.map(
-          async (pokemon: string) => {
-            const pokeData =
-              await getPokemonData(
-                pokemon
-              );
-            const formattedData =
-              sortData(pokeData);
-            return formattedData as Pokemon;
-          }
-        )
+    if (!cleanUp.current) {
+      fetchPokemons(
+        pagination.current.offset,
+        pagination.current.limit,
+        favorites.current
       );
+    }
 
-      if (data) {
-        setFavorites(data);
-        setPokemons(
-          data.slice(
-            pagination.offset,
-            pagination.limit
-          )
-        );
-      }
+    return () => {
+      cleanUp.current = true;
     };
-    user && getPokemons();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user]);
+  }, []);
 
-  const loadMore = () => {
-    setPagination({
-      ...pagination,
-      limit: pokemons.length + 6,
-    });
+  const loadMore = async () => {
+    pagination.current = {
+      offset: pokemons.length,
+      limit:
+        pokemons.length + PAGE_SIZE,
+    };
 
-    const nextPokemons =
-      favorites.slice(
-        0,
-        pokemons.length + 6
+    fetchPokemons(
+      pokemons.length,
+      pokemons.length + PAGE_SIZE,
+      favorites.current
+    );
+  };
+
+  const removePokemon = (
+    id: number
+  ) => {
+    const newPokemonList =
+      pokemons.filter(
+        (poke) => poke.id !== id
       );
 
-    setPokemons([...nextPokemons]);
+    setPokemons(newPokemonList);
+
+    const newFavorites =
+      favorites.current.filter(
+        (poke) => poke !== id
+      );
+
+    favorites.current = newFavorites;
+
+    fetchPokemons(
+      newPokemonList.length,
+      newPokemonList.length + 1,
+      newFavorites
+    );
   };
 
   return randomPokemonLoading ? (
@@ -107,6 +144,9 @@ export default function Favorites() {
               <Card
                 key={pokemon.id}
                 pokemon={pokemon}
+                onClick={(id) => {
+                  removePokemon(id);
+                }}
               />
             )
           )}
@@ -115,8 +155,7 @@ export default function Favorites() {
         <DefaultMessage message="No pokemons found" />
       )}
       {pokemons.length > 0 &&
-        pokemons.length <
-          favorites.length && (
+        pokemons.length < favsCount && (
           <Pagination>
             <Button
               onClick={() => {
@@ -129,21 +168,4 @@ export default function Favorites() {
         )}
     </>
   );
-}
-
-export async function getServerSideProps({
-  req,
-}: GetServerSidePropsContext) {
-  const { user } = req.cookies;
-  if (!user) {
-    return {
-      redirect: {
-        destination: "/",
-        permanent: false,
-      },
-    };
-  }
-  return {
-    props: {},
-  };
 }

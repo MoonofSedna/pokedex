@@ -11,13 +11,15 @@ export default function LikeButton({
   user,
   pokemon,
   className,
+  onClick,
 }: LikeButtonProps) {
   return (
     <C.LikeButton
       className={className}
-      onClick={() =>
-        addToFav(user, pokemon)
-      }
+      onClick={() => {
+        addToFav(user, pokemon);
+        onClick?.(pokemon);
+      }}
     >
       <Heart />
     </C.LikeButton>

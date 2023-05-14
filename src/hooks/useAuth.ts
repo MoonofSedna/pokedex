@@ -2,7 +2,13 @@ import {
   useState,
   useEffect,
 } from "react";
-import { getCookie } from "cookies-next";
+import {
+  deleteCookie,
+  setCookie,
+} from "cookies-next";
+import { onAuthStateChanged } from "firebase/auth";
+// firebase
+import firebase from "@/firebase";
 // store
 import store from "@/store";
 import { setUser } from "@/store/slices/user";
@@ -12,18 +18,45 @@ export default function useAuth() {
     useState(true);
 
   useEffect(() => {
-    const getUser = () => {
-      const user = getCookie("user");
-      if (user) {
-        store.dispatch(
-          setUser(
-            JSON.parse(user as string)
-          )
-        );
-      }
-      setLoading(false);
+    const unsubscribe =
+      onAuthStateChanged(
+        firebase.auth,
+        async (authUser) => {
+          if (authUser) {
+            setCookie(
+              "user-token",
+              authUser.refreshToken
+            );
+
+            const favList =
+              await firebase.getDoc(
+                authUser.uid
+              );
+
+            const favListData =
+              favList.docs[0]?.data();
+
+            const user = {
+              id: authUser.uid,
+              email: authUser.email,
+              favorites:
+                favListData?.favorites ||
+                [],
+            };
+
+            store.dispatch(
+              setUser(user)
+            );
+          } else {
+            deleteCookie("user-token");
+          }
+          setLoading(false);
+        }
+      );
+
+    return () => {
+      unsubscribe();
     };
-    getUser();
   }, []);
 
   return { loading };

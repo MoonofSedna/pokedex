@@ -10,9 +10,10 @@ import { useRouter } from "next/router";
 // styles
 import * as C from "./styles";
 // store
-import { logout } from "@/store/slices/user";
+import { setUser } from "@/store/slices/user";
 // logo
 import Logo from "@/assets/images/logo.png";
+import firebase from "@/firebase";
 
 export default function Navbar() {
   const router = useRouter();
@@ -23,9 +24,10 @@ export default function Navbar() {
   );
 
   const signOut = () => {
+    firebase.logout();
     router.push("/");
-    dispatch(logout());
-    deleteCookie("user");
+    dispatch(setUser(null));
+    deleteCookie("user-token");
   };
 
   const routes = [

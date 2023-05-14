@@ -9,13 +9,13 @@ import Badge from "../Badge/Badge";
 import Button from "../Button";
 // interfaces
 import { FilterProps } from "@/interfaces/components";
-import { PokemonType } from "@/interfaces/pokemon";
+import {
+  Generation,
+  PokemonType,
+} from "@/interfaces/pokemon";
 
 // store
-import {
-  updatePokemonList,
-  updateFilters,
-} from "@/store/slices/pokemons";
+import { updatePokemonList } from "@/store/slices/pokemons";
 // styles
 import * as C from "./styles";
 // utils
@@ -23,21 +23,23 @@ import { getPokemonByName } from "@/utils/api/poke-api";
 import { generations } from "@/utils/generations";
 import { pokemonTypes } from "@/utils/pokemon-types";
 import {
+  DEFAULT_GENERATION,
   DEFAULT_TYPE,
   PAGE_SIZE,
 } from "@/utils/constant";
 import { fetchPokemons } from "@/utils/functions/fetch-pokemons";
 
 export default function Filter({
+  selectedType,
+  selectedGeneration,
   setLoading,
+  updateFilter,
 }: FilterProps) {
   const dispatch = useDispatch();
 
-  const { filters, pokemons } =
-    useSelector(
-      (state: RootState) =>
-        state.pokemons
-    );
+  const { pokemons } = useSelector(
+    (state: RootState) => state.pokemons
+  );
 
   const onSearch = async (
     search: string
@@ -63,54 +65,51 @@ export default function Filter({
   };
 
   const filterByType = async (
-    type: string
+    type: PokemonType
   ) => {
-    if (filters.type === type) return;
+    if (type === selectedType) return;
 
     setLoading(true);
 
-    dispatch(
-      updateFilters({
-        generation: filters.generation,
-        type,
-      })
+    updateFilter(
+      type,
+      selectedGeneration
     );
 
     await fetchPokemons(
       type === DEFAULT_TYPE
-        ? filters.generation.offset
-        : 0,
+        ? selectedGeneration.offset
+        : DEFAULT_GENERATION.offset,
       PAGE_SIZE,
       type,
-      filters.generation
+      selectedGeneration
     );
 
     setLoading(false);
   };
 
   const filterByGeneration = async (
-    gen: (typeof generations)[0]
+    generation: Generation
   ) => {
     if (
-      filters.generation.id === gen.id
+      selectedGeneration.id ===
+      generation.id
     ) {
       return;
     }
 
     setLoading(true);
 
-    dispatch(
-      updateFilters({
-        generation: gen,
-        type: filters.type,
-      })
+    updateFilter(
+      selectedType,
+      generation
     );
 
     await fetchPokemons(
-      gen.offset,
+      generation.offset,
       PAGE_SIZE,
-      filters.type,
-      gen
+      selectedType,
+      generation
     );
 
     setLoading(false);
@@ -118,12 +117,12 @@ export default function Filter({
 
   const clearSearch = () => {
     fetchPokemons(
-      filters.type === DEFAULT_TYPE
-        ? filters.generation.offset
-        : 0,
+      selectedType === DEFAULT_TYPE
+        ? selectedGeneration.offset
+        : DEFAULT_GENERATION.offset,
       PAGE_SIZE,
-      filters.type,
-      filters.generation
+      selectedType,
+      selectedGeneration
     );
   };
 
@@ -140,7 +139,7 @@ export default function Filter({
           <Button
             key={gen.id}
             className={
-              filters.generation.id ===
+              selectedGeneration.id ===
               gen.id
                 ? "active"
                 : ""
@@ -155,18 +154,20 @@ export default function Filter({
       </C.Generations>
       <C.Types>
         {Object.keys(pokemonTypes).map(
-          (type) => {
+          (pokemonType) => {
             return (
               <Badge
-                key={type}
+                key={pokemonType}
                 type={
-                  type as PokemonType
+                  pokemonType as PokemonType
                 }
                 selectedType={
-                  filters.type
+                  selectedType
                 }
                 onClick={() =>
-                  filterByType(type)
+                  filterByType(
+                    pokemonType as PokemonType
+                  )
                 }
               />
             );

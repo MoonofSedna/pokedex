@@ -40,3 +40,7 @@ button,
 input {
   font-family: inherit;
 }
+
+.main-loader {
+  margin-top: 5rem;
+}

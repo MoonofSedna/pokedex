@@ -1,23 +1,19 @@
 import React, { useState } from "react";
 import router from "next/router";
 import { AxiosError } from "axios";
-import { setCookie } from "cookies-next";
-import { GetServerSidePropsContext } from "next";
 // components
 import Form from "@/components/Form";
 import MainCard from "@/components/MainCard";
 import Loader from "@/components/Loader";
+// firebase
+import firebase from "@/firebase";
 // hooks
 import useRandomPokemon from "@/hooks/useRandomPokemon";
 import useValidation from "@/hooks/useValidation";
 // interfaces
 import { Pokemon } from "@/interfaces/pokemon";
-// store
-import store from "@/store";
-import { setUser } from "@/store/slices/user";
 // utils
 import { validateSignUp } from "@/utils/form-validations";
-import { signup } from "@/utils/api/user-api";
 
 const initialState = {
   email: "",
@@ -51,15 +47,11 @@ export default function SignIn() {
   async function createUser() {
     setSubmitting(true);
     try {
-      const user = await signup(
+      await firebase.signin(
         email,
         password
       );
-      if (user) {
-        setCookie("user", user);
-        store.dispatch(setUser(user));
-        router.push("/");
-      }
+      router.push("/");
     } catch (e) {
       const error = e as AxiosError;
       setError(error.message);
@@ -106,21 +98,4 @@ export default function SignIn() {
       }
     />
   );
-}
-
-export async function getServerSideProps(
-  x: GetServerSidePropsContext
-) {
-  const { user } = x.req.cookies;
-  if (user) {
-    return {
-      redirect: {
-        destination: "/",
-        permanent: false,
-      },
-    };
-  }
-  return {
-    props: {},
-  };
 }

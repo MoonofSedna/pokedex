@@ -1,3 +1,7 @@
+import {
+  useEffect,
+  useState,
+} from "react";
 import { useSelector } from "react-redux";
 // components
 import CardGrid from "@/components/CardGrid";
@@ -9,31 +13,44 @@ import Pagination from "@/components/Pagination";
 import Loader from "@/components/Loader";
 import DefaultMessage from "@/components/DefaultMessage";
 // interfaces
-import { Pokemon } from "@/interfaces/pokemon";
+import {
+  Generation,
+  Pokemon,
+  PokemonType,
+} from "@/interfaces/pokemon";
 // hooks
 import useRandomPokemon from "@/hooks/useRandomPokemon";
+import usePagination from "@/hooks/usePagination";
 // store
 import { RootState } from "@/store";
 // utils
-import { PAGE_SIZE } from "@/utils/constant";
 import {
-  useCallback,
-  useEffect,
-  useState,
-} from "react";
-import usePagination from "@/hooks/usePagination";
+  DEFAULT_GENERATION,
+  DEFAULT_TYPE,
+  PAGE_SIZE,
+} from "@/utils/constant";
 import { fetchPokemons } from "@/utils/functions/fetch-pokemons";
 
 export default function Home() {
-  const [loading, setLoading] =
-    useState<boolean>(false);
+  const { pokemonsByType, pokemons } =
+    useSelector(
+      (state: RootState) =>
+        state.pokemons
+    );
 
-  const {
-    pokemonsByType,
-    pokemons,
-    filters,
-  } = useSelector(
-    (state: RootState) => state.pokemons
+  const [loading, setLoading] =
+    useState<boolean>(true);
+  const [
+    selectedType,
+    setSelectedType,
+  ] = useState<PokemonType>(
+    DEFAULT_TYPE
+  );
+  const [
+    selectedGeneration,
+    setSelectedGeneration,
+  ] = useState<Generation>(
+    DEFAULT_GENERATION
   );
 
   const {
@@ -45,24 +62,23 @@ export default function Home() {
     paginationLoading,
     onPageChange,
     onPaginateByType,
-  } = usePagination();
-
-  const getPokemonData =
-    useCallback(() => {
-      fetchPokemons(
-        filters.generation.offset,
-        PAGE_SIZE,
-        filters.type,
-        filters.generation
-      );
-    }, [
-      filters.generation,
-      filters.type,
-    ]);
+  } = usePagination(
+    selectedType,
+    selectedGeneration
+  );
 
   useEffect(() => {
-    getPokemonData();
-  }, [getPokemonData]);
+    const getPokemons = async () => {
+      await fetchPokemons(
+        DEFAULT_GENERATION.offset,
+        PAGE_SIZE,
+        DEFAULT_TYPE,
+        DEFAULT_GENERATION
+      );
+      setLoading(false);
+    };
+    getPokemons();
+  }, []);
 
   return (
     <>
@@ -77,6 +93,21 @@ export default function Home() {
             }
             footer={
               <Filter
+                selectedType={
+                  selectedType
+                }
+                selectedGeneration={
+                  selectedGeneration
+                }
+                updateFilter={(
+                  type,
+                  generation
+                ) => {
+                  setSelectedType(type);
+                  setSelectedGeneration(
+                    generation
+                  );
+                }}
                 setLoading={(
                   isLoading
                 ) => {
@@ -87,9 +118,9 @@ export default function Home() {
           />
           <Breadcrumb
             generation={
-              filters.generation
+              selectedGeneration
             }
-            type={filters.type}
+            type={selectedType}
             pokemons={pokemons.length}
             pokemonsByType={
               pokemonsByType.length
@@ -107,15 +138,17 @@ export default function Home() {
               )}
             </CardGrid>
           ) : (
-            <DefaultMessage message="No pokemons found" />
+            !loading && (
+              <DefaultMessage message="No pokemons found" />
+            )
           )}
           {!loading &&
             pokemons.length >
               PAGE_SIZE - 1 && (
               <Pagination
-                type={filters.type}
+                type={selectedType}
                 generation={
-                  filters.generation
+                  selectedGeneration
                 }
                 pokemons={
                   pokemons.length

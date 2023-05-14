@@ -1,34 +1,30 @@
+// store
 import store from "@/store";
 import { setUser } from "@/store/slices/user";
-import { setCookie } from "cookies-next";
+// firebase
+import firebase from "@/firebase";
 // interfaces
 import { User } from "@/interfaces/user";
-// utils
-import { updateUserData } from "../api/user-api";
 
-export const addToFav = (
+export const addToFav = async (
   user: User,
-  pokemon: string | number
+  pokemon: number
 ) => {
   if (!user) return;
 
-  let favList: string[] =
+  let favList: number[] =
     user.favorites;
 
   const checkFav = favList.find(
-    (fav) => fav === pokemon.toString()
+    (fav) => fav === pokemon
   );
 
   if (checkFav) {
     favList = favList.filter(
-      (fav) =>
-        fav !== pokemon.toString()
+      (fav) => fav !== pokemon
     );
   } else {
-    favList = [
-      pokemon.toString(),
-      ...favList,
-    ];
+    favList = [pokemon, ...favList];
   }
 
   const userUpdated = {
@@ -38,10 +34,15 @@ export const addToFav = (
 
   store.dispatch(setUser(userUpdated));
 
-  setCookie(
-    "user",
-    JSON.stringify(userUpdated)
-  );
+  const getFavList =
+    await firebase.getDoc(user.id);
 
-  updateUserData(userUpdated);
+  if (getFavList.docs[0]?.id) {
+    await firebase.updateDoc(
+      getFavList.docs[0]?.id,
+      {
+        favorites: favList,
+      }
+    );
+  }
 };

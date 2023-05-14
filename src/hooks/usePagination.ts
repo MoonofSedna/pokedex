@@ -11,19 +11,24 @@ import { getPokemonData } from "@/utils/api/poke-api";
 import { PAGE_SIZE } from "@/utils/constant";
 import { fetchPokemons } from "@/utils/functions/fetch-pokemons";
 import { sortData } from "@/utils/functions/sort-pokemon-data";
+import {
+  Generation,
+  PokemonType,
+} from "@/interfaces/pokemon";
 
-export default function usePagination() {
+export default function usePagination(
+  type: PokemonType,
+  generation: Generation
+) {
   const dispatch = useDispatch();
 
   const [loading, setLoading] =
     useState(false);
-  const {
-    filters,
-    pokemonsByType,
-    pokemons,
-  } = useSelector(
-    (state: RootState) => state.pokemons
-  );
+  const { pokemonsByType, pokemons } =
+    useSelector(
+      (state: RootState) =>
+        state.pokemons
+    );
 
   const onPageChange = async () => {
     setLoading(true);
@@ -32,22 +37,20 @@ export default function usePagination() {
       pokemons.length / PAGE_SIZE
     );
 
-    const limit =
-      filters.generation.limit;
+    const limit = generation.limit;
 
     const getLimit =
       (page + 1) * PAGE_SIZE < limit
         ? (page + 1) * PAGE_SIZE
         : limit;
 
-    const getOffset =
-      filters.generation.offset;
+    const getOffset = generation.offset;
 
     await fetchPokemons(
       getOffset,
       getLimit,
-      filters.type,
-      filters.generation
+      type,
+      generation
     );
 
     setLoading(false);

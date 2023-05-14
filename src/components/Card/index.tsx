@@ -13,7 +13,10 @@ import { pokemonTypes } from "@/utils/pokemon-types";
 // styles
 import * as C from "./styles";
 
-function Card({ pokemon }: CardProps) {
+function Card({
+  pokemon,
+  onClick,
+}: CardProps) {
   const { user } = useSelector(
     (state: RootState) => state.user
   );
@@ -58,6 +61,7 @@ function Card({ pokemon }: CardProps) {
               }`}
               user={user}
               pokemon={pokemon.id}
+              onClick={onClick}
             />
           )}
         </C.CardHeader>
