@@ -1,4 +1,3 @@
-import Head from "next/head";
 // components
 import Header from "../Header";
 // interfaces
