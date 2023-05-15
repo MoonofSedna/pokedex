@@ -53,6 +53,11 @@ export default function Home() {
     DEFAULT_GENERATION
   );
 
+  const paginationCount =
+    selectedType === DEFAULT_TYPE
+      ? selectedGeneration.limit
+      : pokemonsByType.length;
+
   const {
     randomPokemon,
     randomPokemonLoading,
@@ -60,12 +65,17 @@ export default function Home() {
 
   const {
     paginationLoading,
-    onPageChange,
-    onPaginateByType,
+    paginateByType,
+    paginateByGeneration,
   } = usePagination(
     selectedType,
     selectedGeneration
   );
+
+  const onPageChange = () =>
+    selectedType === DEFAULT_TYPE
+      ? paginateByGeneration()
+      : paginateByType();
 
   useEffect(() => {
     const getPokemons = async () => {
@@ -121,10 +131,10 @@ export default function Home() {
               selectedGeneration
             }
             type={selectedType}
-            pokemons={pokemons.length}
-            pokemonsByType={
+            count={
               pokemonsByType.length
             }
+            pokemons={pokemons.length}
           />
           {pokemons.length > 0 ? (
             <CardGrid loading={loading}>
@@ -142,31 +152,18 @@ export default function Home() {
               <DefaultMessage message="No pokemons found" />
             )
           )}
-          {!loading &&
-            pokemons.length >
-              PAGE_SIZE - 1 && (
-              <Pagination
-                type={selectedType}
-                generation={
-                  selectedGeneration
-                }
-                pokemons={
-                  pokemons.length
-                }
-                pokemonsByType={
-                  pokemonsByType.length
-                }
-                onPageChange={
-                  onPageChange
-                }
-                onPaginateByType={
-                  onPaginateByType
-                }
-                loading={
-                  paginationLoading
-                }
-              />
-            )}
+
+          <Pagination
+            showPagination={
+              !loading &&
+              pokemons.length >
+                PAGE_SIZE - 1
+            }
+            count={paginationCount}
+            pokemons={pokemons.length}
+            onPageChange={onPageChange}
+            loading={paginationLoading}
+          />
         </>
       )}
     </>

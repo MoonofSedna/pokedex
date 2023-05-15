@@ -8,7 +8,8 @@ export default function Loader({
 }) {
   return (
     <C.Container className={className}>
-      <C.Loader>Loading...</C.Loader>
+      <C.Loader />
+      Loading...
     </C.Container>
   );
 }

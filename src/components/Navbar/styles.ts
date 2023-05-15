@@ -11,7 +11,7 @@ export const Navbar = styled.nav`
   ul {
     display: flex;
     list-style: none;
-    gap: 5px;
+    gap: 10px;
     a,
     div {
       cursor: pointer;
@@ -22,32 +22,39 @@ export const Navbar = styled.nav`
       color: var(--white);
       font-size: 0.99em;
       position: relative;
+      font-weight: var(--bold);
     }
-    & li:not(.btn) {
-      a,
-      div {
-        &::before {
-          content: "";
-          position: absolute;
-          top: 100%;
-          left: 0;
-          width: 100%;
-          height: 3px;
-          background: rgba(
-            255,
-            255,
-            255,
-            0.8
-          );
-          opacity: 0;
-          transform: translate(0, 10px);
-          transition: opacity 0.3s ease,
-            transform 0.3s ease;
-        }
-        &:hover::before {
-          opacity: 1;
-          transform: translate(0, -3px);
-        }
+    & li {
+      display: flex;
+      align-items: center;
+    }
+    & a {
+      position: relative;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: var(--btn-transition);
+      & svg {
+        width: 15px;
+        height: 15px;
+        transition: var(
+          --btn-transition
+        );
+      }
+      &::after,
+      &::before {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        height: 2px;
+        width: 0;
+        will-change: width;
+        transition: var(
+          --btn-transition
+        );
+        background-color: var(--white);
       }
     }
     & li.btn a,
@@ -56,12 +63,58 @@ export const Navbar = styled.nav`
       color: var(--dark-blue);
       background-color: var(--white);
       border-radius: 5px;
-      transition: all 0.3s ease;
+      transition: var(--btn-transition);
+    }
+    & .btn.active-link a,
+    div:hover {
+      color: var(--white);
+      background-color: var(
+        --transparent-font-color
+      );
+      transition: var(--btn-transition);
+    }
+  }
+
+  @media screen and (min-width: 768px) {
+    & li:not(.btn) a:hover,
+    & li:not(.btn).active-link > a {
+      transition: var(--btn-transition);
+      & svg {
+        transition: var(
+          --btn-transition
+        );
+      }
+      &::after,
+      &::before {
+        width: 100%;
+        transition: var(
+          --btn-transition
+        );
+      }
+    }
+  }
+
+  @media screen and (max-width: 767px) {
+    & ul li:not(.btn) a {
+      background-color: var(--white);
+      border-radius: 30px;
+      padding: 10px;
       &:hover {
         color: var(--white);
         background-color: var(
           --transparent-font-color
         );
+        & svg {
+          fill: var(--white);
+        }
+      }
+      & svg {
+        width: 18px;
+        height: 18px;
+        fill: var(--dark-blue);
+      }
+      & span {
+        display: none;
       }
     }
   }

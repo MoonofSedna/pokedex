@@ -13,54 +13,56 @@ const spin = keyframes`
 
 export const Container = styled.div`
   height: 90vh;
+  font-size: 1.5rem;
+  color: var(--white);
   position: relative;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
+  & > h2 {
+    font-size: clamp(
+      1.5rem,
+      4vw,
+      2.5rem
+    );
+    color: var(--white);
+  }
+  & > img {
+    margin-bottom: 10px;
+  }
 `;
 
 export const Loader = styled.div`
+  width: 110px;
+  height: 110px;
+  background-color: var(--white);
+  border-radius: 50%;
   position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  font-size: 1.5rem;
-  color: var(--white);
+  overflow: hidden;
+  margin-bottom: 20px;
+  animation: ${spin} 0.8s linear 0s
+    infinite;
   &::before {
     content: "";
-    display: block;
-    height: 5rem;
-    width: 5rem;
-    border: 0.6em solid var(--red);
-    border-radius: 100%;
-    margin-bottom: 10px;
-    clip-path: polygon(
-      0 0,
-      0 40%,
-      50% 40%,
-      50% 60%,
-      0 60%,
-      0 100%,
-      100% 100%,
-      100% 60%,
-      50% 60%,
-      50% 40%,
-      100% 40%,
-      100% 0
-    );
-    animation: ${spin} 0.5s infinite
-      ease-in-out;
+    position: absolute;
+    background-color: var(--white);
+    width: 18px;
+    height: 18px;
+    border: 8px solid var(--dark-blue);
+    border-radius: 50%;
+    bottom: 38px;
+    right: 38px;
+    z-index: 1;
   }
   &::after {
     content: "";
-    display: block;
     position: absolute;
-    top: 46%;
-    margin-top: -1.6em;
-    height: 3.2rem;
-    width: 3.2rem;
-    background-color: #ccc;
-    border-radius: 100%;
+    width: 110px;
+    height: 55px;
+    background-color: var(--red);
+    border-bottom: 8px solid
+      var(--dark-blue);
+    top: -4px;
   }
 `;

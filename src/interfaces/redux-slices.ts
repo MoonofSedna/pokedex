@@ -16,5 +16,4 @@ export interface PokemonSlice {
 
 export interface UserSlice {
   user: User | null;
-  favorites: Pokemon[];
 }

@@ -13,9 +13,9 @@ export interface BadgeProps {
 }
 
 export interface BreadcrumbProps {
-  generation: Generation;
-  type: string;
-  pokemonsByType: number;
+  generation?: Generation;
+  type?: string;
+  count: number;
   pokemons: number;
 }
 
@@ -41,6 +41,10 @@ export interface CardGridProps {
 
 export interface DefaultMessageProps {
   message: string;
+}
+
+export interface DividerProps {
+  icon: JSX.Element;
 }
 
 export interface FilterProps {
@@ -108,13 +112,11 @@ export interface PokemonCardProps {
 }
 
 export interface PaginationProps {
-  type: string;
-  generation: Generation;
+  count: number;
   pokemons: number;
   loading?: boolean;
-  pokemonsByType: number;
   onPageChange: () => void;
-  onPaginateByType: () => void;
+  showPagination: boolean;
 }
 
 export interface SearchBarProps {

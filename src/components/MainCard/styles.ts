@@ -63,10 +63,10 @@ const Container = styled.div`
   & > img {
     margin: 1rem 0 0 1rem;
     cursor: pointer;
-    transition: 0.5s ease-in-out;
+    transition: var(--btn-transition);
     &:hover {
       transform: scale(1.1);
-      transition: 0.5s ease-in-out;
+      transition: var(--btn-transition);
     }
   }
   & .pokemon-image {
@@ -89,6 +89,12 @@ const Container = styled.div`
       height: 35px;
     }
   }
+  @media screen and (max-width: 767px) {
+    & .pokemon-image {
+      max-height: 300px;
+      max-width: 320px;
+    }
+  }
   @media screen and (max-width: 600px) {
     & .header {
       padding: 0.7rem;
@@ -105,44 +111,32 @@ const CardBody = styled.div`
   height: 100%;
   display: grid;
   padding: 0 3rem 1rem 3rem;
-  grid-template-columns: repeat(
-    auto-fit,
-    minmax(300px, 1fr)
-  );
+  grid-template-columns: 1fr 1px 1fr;
   gap: 1rem;
-  @media screen and (max-width: 760px) {
+  @media screen and (max-width: 767px) {
     padding: 0 1.5rem 1rem 1.5rem;
-    grid-template-columns: repeat(
-      auto-fit,
-      minmax(240px, 1fr)
-    );
-    & > div:first-of-type {
-      padding: 2rem 1rem;
-    }
-    & > div:last-of-type {
-      padding: 1rem;
-      display: flex;
-      justify-content: center;
-    }
+    grid-template-columns: 1fr;
   }
 `;
 
 const CardContent = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+
   position: relative;
   &:first-of-type {
     max-width: 450px;
+    align-items: flex-start;
     padding: 3rem 3rem 3rem 0;
   }
   &:last-of-type {
+    align-items: flex-end;
     justify-content: center;
     padding: 3rem 1.5rem;
   }
   & > span {
     font-size: clamp(
-      3.5rem,
+      2.5rem,
       5vw,
       1.5rem
     );
@@ -151,7 +145,7 @@ const CardContent = styled.div`
     );
   }
   & h2 {
-    font-size: 2.8rem;
+    font-size: clamp(2rem, 5vw, 2.8rem);
     padding-bottom: 0.5rem;
     text-transform: uppercase;
     color: #fff;
@@ -161,7 +155,7 @@ const CardContent = styled.div`
   & p {
     color: var(--white);
     font-size: 18px;
-    padding: 1.5rem 0;
+    padding-bottom: 1.5rem;
     font-weight: 600;
   }
 
@@ -175,6 +169,51 @@ const CardContent = styled.div`
   & > a {
     margin-top: 1rem;
     width: 100%;
+  }
+
+  @media screen and (max-width: 767px) {
+    &:first-of-type {
+      padding: 2rem 0;
+      & h2 {
+        font-size: clamp(
+          2.5rem,
+          8vw,
+          3rem
+        );
+      }
+      & > span {
+        font-size: clamp(
+          3rem,
+          5vw,
+          3.5rem
+        );
+        color: var(
+          --transparent-font-color
+        );
+      }
+    }
+    &:first-of-type,
+    & > a {
+      max-width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      & button,
+      & p {
+        text-align: center;
+        max-width: clamp(
+          200px,
+          95%,
+          500px
+        );
+      }
+    }
+    &:last-of-type {
+      padding: 1rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
   }
 `;
 

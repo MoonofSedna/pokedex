@@ -5,13 +5,13 @@ import {
 } from "react";
 import { useSelector } from "react-redux";
 // components
+import Breadcrumb from "@/components/Breadcrumb";
 import Card from "@/components/Card";
 import CardGrid from "@/components/CardGrid";
 import Loader from "@/components/Loader";
 import MainCard from "@/components/MainCard";
 import DefaultMessage from "@/components/DefaultMessage";
-import { Pagination } from "@/components/Pagination/styles";
-import Button from "@/components/Button";
+import Pagination from "@/components/Pagination";
 // hooks
 import useRandomPokemon from "@/hooks/useRandomPokemon";
 // interfaces
@@ -91,7 +91,7 @@ export default function Favorites() {
         pokemons.length + PAGE_SIZE,
     };
 
-    fetchPokemons(
+    await fetchPokemons(
       pokemons.length,
       pokemons.length + PAGE_SIZE,
       favorites.current
@@ -137,7 +137,11 @@ export default function Favorites() {
           </h3>
         }
       />
-      {pokemons.length > 0 ? (
+      <Breadcrumb
+        pokemons={pokemons.length}
+        count={favsCount}
+      />
+      {favsCount > 0 ? (
         <CardGrid>
           {pokemons.map(
             (pokemon: Pokemon) => (
@@ -154,18 +158,14 @@ export default function Favorites() {
       ) : (
         <DefaultMessage message="No pokemons found" />
       )}
-      {pokemons.length > 0 &&
-        pokemons.length < favsCount && (
-          <Pagination>
-            <Button
-              onClick={() => {
-                loadMore();
-              }}
-            >
-              Show More
-            </Button>
-          </Pagination>
-        )}
+      <Pagination
+        showPagination={
+          pokemons.length > 0
+        }
+        pokemons={pokemons.length}
+        count={favsCount}
+        onPageChange={loadMore}
+      />
     </>
   );
 }

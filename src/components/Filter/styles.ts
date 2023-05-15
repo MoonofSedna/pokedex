@@ -9,6 +9,7 @@ const Generations = styled.div`
     auto-fit,
     minmax(70px, 1fr)
   );
+
   & > button {
     cursor: pointer;
     border: none;

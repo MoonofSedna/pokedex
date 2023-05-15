@@ -1,19 +1,23 @@
-import { RootState } from "@/store";
+import Link from "next/link";
+import Image from "next/image";
 import {
   useDispatch,
   useSelector,
 } from "react-redux";
 import { deleteCookie } from "cookies-next";
-import Link from "next/link";
-import Image from "next/image";
 import { useRouter } from "next/router";
+// firebase
+import firebase from "@/firebase";
+// icons
+import Home from "@/assets/icons/home";
+import Heart from "@/assets/icons/heart";
 // styles
 import * as C from "./styles";
 // store
-import { setUser } from "@/store/slices/user";
+import { updateUser } from "@/store/slices/user";
+import { RootState } from "@/store";
 // logo
 import Logo from "@/assets/images/logo.png";
-import firebase from "@/firebase";
 
 export default function Navbar() {
   const router = useRouter();
@@ -26,15 +30,17 @@ export default function Navbar() {
   const signOut = () => {
     firebase.logout();
     router.push("/");
-    dispatch(setUser(null));
+    dispatch(updateUser(null));
     deleteCookie("user-token");
   };
+
+  const path = router.pathname;
 
   const routes = [
     {
       name: "Home",
       path: "/",
-      hide: !user,
+      icon: <Home />,
     },
     {
       name: "Login",
@@ -52,6 +58,7 @@ export default function Navbar() {
       name: "Favorites",
       path: "/favorites",
       hide: !user,
+      icon: <Heart />,
     },
     {
       name: "Logout",
@@ -82,9 +89,13 @@ export default function Navbar() {
           return (
             <li
               key={route.name}
-              className={
+              className={`${
                 route.className
-              }
+              } ${
+                path === route.path
+                  ? "active-link"
+                  : ""
+              }`}
             >
               {route.onClick ? (
                 <div
@@ -96,7 +107,10 @@ export default function Navbar() {
                 </div>
               ) : (
                 <Link href={route.path}>
-                  {route.name}
+                  {route.icon}
+                  <span>
+                    {route.name}
+                  </span>
                 </Link>
               )}
             </li>

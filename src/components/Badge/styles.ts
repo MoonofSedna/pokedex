@@ -10,7 +10,7 @@ const Badge = styled.label<{
   align-items: center;
   justify-content: center;
   position: relative;
-  min-height: 33px;
+  min-height: 32px;
   font-size: 0.8rem;
   box-shadow: var(--btn-box-shadow);
   text-transform: uppercase;

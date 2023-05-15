@@ -1,6 +1,6 @@
 // store
 import store from "@/store";
-import { setUser } from "@/store/slices/user";
+import { updateUser } from "@/store/slices/user";
 // firebase
 import firebase from "@/firebase";
 // interfaces
@@ -32,7 +32,9 @@ export const addToFav = async (
     favorites: favList,
   };
 
-  store.dispatch(setUser(userUpdated));
+  store.dispatch(
+    updateUser(userUpdated)
+  );
 
   const getFavList =
     await firebase.getDoc(user.id);

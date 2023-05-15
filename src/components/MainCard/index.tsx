@@ -8,6 +8,7 @@ import { useSelector } from "react-redux";
 import Icon from "../Icon";
 import Badge from "../Badge/Badge";
 import Button from "../Button";
+import Divider from "../Divider";
 import LikeButton from "../LikeButton";
 // interfaces
 import { MainCardProps } from "@/interfaces/components";
@@ -114,6 +115,15 @@ function MainCard({
             </Link>
           )}
         </C.CardContent>
+        <Divider
+          icon={
+            <Icon
+              name={pokemon.types[0]}
+              width={35}
+              height={35}
+            />
+          }
+        />
         <C.CardContent>
           <Image
             className="pokemon-image"

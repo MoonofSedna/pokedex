@@ -4,7 +4,7 @@ import styled, {
 // images
 import Pokeball from "../../assets/images/pokeball.svg";
 
-const fade = keyframes`
+export const fade = keyframes`
   0% {
     opacity: 0;
   }
@@ -26,12 +26,12 @@ const Overlay = styled.div<{
   backface-visibility: hidden;
   &::after {
     content: "";
-    width: 90%;
-    height: 90%;
+    width: 85%;
+    height: 85%;
     position: absolute;
-    top: 0;
+    top: 50%;
     left: 50%;
-    transform: translateX(-50%);
+    transform: translate(-50%, -50%);
     background-color: ${(props) =>
       props.background};
     filter: blur(80px);
@@ -67,7 +67,7 @@ const CardContainer = styled.div`
   }
   & .pokemon-image {
     filter: drop-shadow(
-      1px 10px 17px rgba(0, 0, 0, 0.4)
+      1px 10px 17px rgba(0, 0, 0, 0.6)
     );
   }
   &:hover {
@@ -84,34 +84,23 @@ const CardContainer = styled.div`
   &:hover .show-more {
     height: 100%;
     visibility: visible;
-    transition: 0.5s ease-in-out;
+    transition: var(--btn-transition);
     & > span {
       opacity: 1;
-      transition: 0.5s ease-in-out;
+      transition: var(--btn-transition);
     }
   }
   &:hover .pokemon-types {
     opacity: 0;
-    transition: 0.5s ease-in-out;
+    transition: var(--btn-transition);
   }
 `;
 
-const CardHeader = styled.div<{
-  tooltip: string;
-}>`
+const CardHeader = styled.div`
   width: 100%;
   position: relative;
   padding: 0 0.5rem;
-  & span {
-    font-size: 1.5rem;
-    position: absolute;
-    top: 0;
-    right: 0;
-    color: var(
-      --transparent-font-color
-    );
-    opacity: 0.5;
-  }
+
   & > div {
     cursor: pointer;
     position: absolute;
@@ -129,6 +118,7 @@ const CardBody = styled.div`
   flex-direction: column;
   align-items: center;
   & h2 {
+    width: 80%;
     text-transform: capitalize;
     letter-spacing: 0.05rem;
     padding-bottom: 1rem;
@@ -141,6 +131,22 @@ const CardBody = styled.div`
   }
   & img {
     transition: 0.8s ease-in-out;
+  }
+  & > span {
+    font-size: 1.5rem;
+    background-color: var(
+      --transparent-white
+    );
+    position: absolute;
+    padding: 0.5rem 1rem 0.5rem 1.1rem;
+    top: 0;
+    right: 0;
+    color: var(
+      --transparent-font-color
+    );
+    border-radius: 0 0 0 30px;
+    box-shadow: 0px 2px 8px 0px
+      rgba(0, 0, 0, 0.3);
   }
 `;
 
@@ -189,7 +195,7 @@ const CardFooter = styled.div<{
       color: var(--white);
       opacity: 0;
       text-transform: uppercase;
-      transition: 0.5s ease-in-out;
+      transition: var(--btn-transition);
     }
   }
 `;

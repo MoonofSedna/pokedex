@@ -5,7 +5,10 @@ import {
   updatePokemonsByType,
 } from "@/store/slices/pokemons";
 // interfaces
-import { Generation } from "@/interfaces/pokemon";
+import {
+  Generation,
+  Pokemon,
+} from "@/interfaces/pokemon";
 // utils
 import {
   fetchPokemonByType,
@@ -20,15 +23,21 @@ export const fetchPokemons = async (
   offset: number,
   limit: number,
   type: string,
-  generation: Generation
+  generation: Generation,
+  pokemons?: Pokemon[]
 ) => {
   try {
     if (type === DEFAULT_TYPE) {
-      const pokeList =
+      const pokeData =
         await getPokemons(
           limit,
           offset
         );
+
+      const pokeList =
+        pokemons && pokemons?.length > 0
+          ? [...pokemons, ...pokeData]
+          : pokeData;
 
       store.dispatch(
         updatePokemonList(pokeList)

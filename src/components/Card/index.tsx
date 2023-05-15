@@ -36,22 +36,15 @@ function Card({
         }
       />
       <C.CardBody>
-        <C.CardHeader
-          tooltip={
-            isFavorite
-              ? "Remove from favorites"
-              : "Add to favorites"
-          }
-        >
-          <h2>{pokemon.name}</h2>
-          <span>
-            {`
+        <span>
+          {`
               #${pokemon.id
                 .toString()
                 .padStart(3, "0")}	
             `}
-          </span>
-
+        </span>
+        <C.CardHeader>
+          <h2>{pokemon.name}</h2>
           {user && (
             <LikeButton
               className={`${
@@ -71,7 +64,7 @@ function Card({
           alt={pokemon.name}
           width={250}
           height={250}
-          priority={pokemon.id < 6}
+          priority
         />
       </C.CardBody>
       <C.CardFooter

@@ -9,13 +9,15 @@ export const LikeButton = styled.div`
   background: var(--transparent-white);
   padding: 0.5rem;
   border-radius: 0.5rem;
-  transition: 0.5s ease-in-out;
+  transition: var(--btn-transition);
+  box-shadow: 0px 5px 12px 0px
+    rgba(0, 0, 0, 0.2);
   & svg {
     top: 2px;
     width: 32px;
     height: 32px;
     position: relative;
-    transition: 0.5s ease-in-out;
+    transition: var(--btn-transition);
   }
   & g {
     transition: 0.2s ease-in-out;
@@ -24,7 +26,7 @@ export const LikeButton = styled.div`
 
   &:hover svg {
     transform: scale(1.05);
-    transition: 0.5s ease-in-out;
+    transition: var(--btn-transition);
   }
   &.active g {
     transition: 0.2s ease-in-out;

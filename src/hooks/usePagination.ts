@@ -30,33 +30,34 @@ export default function usePagination(
         state.pokemons
     );
 
-  const onPageChange = async () => {
-    setLoading(true);
+  const paginateByGeneration =
+    async () => {
+      setLoading(true);
+      const limit =
+        generation.limit -
+        pokemons.length;
 
-    const page = Math.floor(
-      pokemons.length / PAGE_SIZE
-    );
+      const getLimit =
+        PAGE_SIZE < limit
+          ? PAGE_SIZE
+          : limit;
 
-    const limit = generation.limit;
+      const getOffset =
+        generation.offset +
+        pokemons.length;
 
-    const getLimit =
-      (page + 1) * PAGE_SIZE < limit
-        ? (page + 1) * PAGE_SIZE
-        : limit;
+      await fetchPokemons(
+        getOffset,
+        getLimit,
+        type,
+        generation,
+        pokemons
+      );
 
-    const getOffset = generation.offset;
+      setLoading(false);
+    };
 
-    await fetchPokemons(
-      getOffset,
-      getLimit,
-      type,
-      generation
-    );
-
-    setLoading(false);
-  };
-
-  const onPaginateByType = async () => {
+  const paginateByType = async () => {
     setLoading(true);
 
     const page = Math.floor(
@@ -104,7 +105,7 @@ export default function usePagination(
 
   return {
     paginationLoading: loading,
-    onPageChange,
-    onPaginateByType,
+    paginateByGeneration,
+    paginateByType,
   };
 }

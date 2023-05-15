@@ -14,7 +14,7 @@ export const Breadcrumb = styled.div`
   margin: 2rem 0;
   gap: 1rem;
   flex-wrap: wrap;
-  & > span {
+  & > span:not(:nth-child(2n)) {
     background-color: var(
       --transparent-white
     );

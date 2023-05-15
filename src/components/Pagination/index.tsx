@@ -1,50 +1,52 @@
 // components
 import Button from "../Button";
+// icons
+import Arrow from "@/assets/icons/arrow-top";
 // interfaces
 import { PaginationProps } from "@/interfaces/components";
 // styles
 import * as C from "./styles";
 // utils
-import { DEFAULT_TYPE } from "@/utils/constant";
+import { PAGE_SIZE } from "@/utils/constant";
 
 export default function Pagination({
-  type,
-  generation,
+  count,
   pokemons,
   loading,
-  pokemonsByType,
   onPageChange,
-  onPaginateByType,
+  showPagination,
 }: PaginationProps) {
-  const PaginationButton = ({
-    onClick,
-  }: {
-    onClick?: () => void;
-  }) => {
+  const ScrollTop = () => {
+    const onScrollTop = () => {
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
+    };
     return (
-      <Button onClick={onClick}>
-        {loading
-          ? "Loading..."
-          : "Show More"}
+      <Button
+        className="scroll-btn"
+        onClick={onScrollTop}
+      >
+        <Arrow />
       </Button>
     );
   };
 
+  if (!showPagination) return null;
+
   return (
     <C.Pagination>
-      {type === DEFAULT_TYPE
-        ? generation &&
-          pokemons <
-            generation.limit && (
-            <PaginationButton
-              onClick={onPageChange}
-            />
-          )
-        : pokemons < pokemonsByType && (
-            <PaginationButton
-              onClick={onPaginateByType}
-            />
-          )}
+      {pokemons < count && (
+        <Button onClick={onPageChange}>
+          {loading
+            ? "Loading..."
+            : "Show More"}
+        </Button>
+      )}
+      {pokemons > PAGE_SIZE && (
+        <ScrollTop />
+      )}
     </C.Pagination>
   );
 }

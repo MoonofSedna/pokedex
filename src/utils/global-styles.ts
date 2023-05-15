@@ -14,8 +14,9 @@ const GlobalStyles = createGlobalStyle`
         --badge-border-radius: 5px;
         --transparent-white: rgba(187, 187, 187, 0.22);
         --transparent-font-color: rgba(255, 255, 255, 0.38);
-        --btn-box-shadow: 0px 5px 12px 0px rgba(0, 0, 0, 0.5);
+        --btn-box-shadow: 0px 5px 6px 0px rgba(0, 0, 0, 0.4);
         --footer-box-shadow: 0px 5px 12px 0px rgb(19, 19, 36);
+        --btn-transition: 0.5s ease-in-out;
     }
 `;
 

@@ -56,11 +56,7 @@ export const getPokemonData = async (
   const { data } = await PokeApi.get(
     `pokemon/${pokemonId}`
   );
-  const pokemon = {
-    ...data,
-    name: data.name.split("-")[0],
-  };
-  return pokemon;
+  return data;
 };
 
 export const getPokemonDescription =

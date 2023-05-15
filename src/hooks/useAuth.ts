@@ -11,7 +11,7 @@ import { onAuthStateChanged } from "firebase/auth";
 import firebase from "@/firebase";
 // store
 import store from "@/store";
-import { setUser } from "@/store/slices/user";
+import { updateUser } from "@/store/slices/user";
 
 export default function useAuth() {
   const [loading, setLoading] =
@@ -45,7 +45,7 @@ export default function useAuth() {
             };
 
             store.dispatch(
-              setUser(user)
+              updateUser(user)
             );
           } else {
             deleteCookie("user-token");
