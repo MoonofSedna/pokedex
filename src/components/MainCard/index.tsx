@@ -20,7 +20,7 @@ import { pokemonTypes } from "@/utils/pokemon-types";
 // styles
 import * as C from "./styles";
 
-function MainCard({
+export default memo(function MainCard({
   header,
   pokemon,
   footer,
@@ -142,6 +142,4 @@ function MainCard({
       {<C.Footer>{footer}</C.Footer>}
     </C.Container>
   );
-}
-
-export default memo(MainCard);
+});

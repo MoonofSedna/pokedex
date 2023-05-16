@@ -1,10 +1,11 @@
+import { memo } from "react";
 // interfaces
 import { CardGridProps } from "@/interfaces/components";
 // styles
 import * as C from "./styles";
 import Icon from "../Icon";
 
-export default function CardGrid({
+export default memo(function CardGrid({
   children,
   loading,
 }: CardGridProps) {
@@ -25,4 +26,4 @@ export default function CardGrid({
       </C.CardGrid>
     </C.Container>
   );
-}
+});

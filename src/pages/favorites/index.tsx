@@ -39,7 +39,7 @@ export default function Favorites() {
     user?.favorites.length ||
     DEFAULT_GENERATION.offset;
 
-  const cleanUp = useRef(false);
+  const isMounted = useRef(false);
   const favorites = useRef([
     ...(user?.favorites || []),
   ]);
@@ -71,7 +71,7 @@ export default function Favorites() {
   };
 
   useEffect(() => {
-    if (!cleanUp.current) {
+    if (!isMounted.current) {
       fetchPokemons(
         pagination.current.offset,
         pagination.current.limit,
@@ -80,7 +80,7 @@ export default function Favorites() {
     }
 
     return () => {
-      cleanUp.current = true;
+      isMounted.current = true;
     };
   }, []);
 
@@ -148,9 +148,7 @@ export default function Favorites() {
               <Card
                 key={pokemon.id}
                 pokemon={pokemon}
-                onClick={(id) => {
-                  removePokemon(id);
-                }}
+                onClick={removePokemon}
               />
             )
           )}

@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import router from "next/router";
 import { AxiosError } from "axios";
 // components
 import Form from "@/components/Form";
@@ -31,6 +30,21 @@ export default function SignIn() {
     randomPokemonLoading,
   } = useRandomPokemon();
 
+  async function signIn() {
+    setSubmitting(true);
+    try {
+      await firebase.signin(
+        email,
+        password
+      );
+    } catch (e) {
+      const error = e as AxiosError;
+      setError(error.message);
+    } finally {
+      setSubmitting(false);
+    }
+  }
+
   const {
     values,
     errors,
@@ -39,26 +53,10 @@ export default function SignIn() {
   } = useValidation(
     initialState,
     validateSignUp,
-    createUser
+    signIn
   );
 
   const { email, password } = values;
-
-  async function createUser() {
-    setSubmitting(true);
-    try {
-      await firebase.signin(
-        email,
-        password
-      );
-      router.push("/");
-    } catch (e) {
-      const error = e as AxiosError;
-      setError(error.message);
-    } finally {
-      setSubmitting(false);
-    }
-  }
 
   const fields = [
     {

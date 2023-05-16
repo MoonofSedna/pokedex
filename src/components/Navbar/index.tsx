@@ -22,7 +22,7 @@ export default function Navbar() {
 
   const signOut = () => {
     firebase.logout();
-    router.push("/");
+    router.replace("/");
     updateUser?.(null);
   };
 

@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { useRouter } from "next/router";
 import { FirebaseError } from "firebase/app";
 // components
 import Form from "@/components/Form";
@@ -21,8 +20,6 @@ const initialState = {
 };
 
 export default function Login() {
-  const router = useRouter();
-
   const [error, setError] =
     useState<string>();
   const [submitting, setSubmitting] =
@@ -33,14 +30,13 @@ export default function Login() {
     randomPokemonLoading,
   } = useRandomPokemon();
 
-  async function getUser() {
+  async function login() {
     setSubmitting(true);
     try {
       await firebase.login(
         email,
         password
       );
-      router.push("/");
     } catch (e) {
       const { message } =
         e as FirebaseError;
@@ -58,7 +54,7 @@ export default function Login() {
   } = useValidation(
     initialState,
     validateLogIn,
-    getUser
+    login
   );
   const { email, password } = values;
 

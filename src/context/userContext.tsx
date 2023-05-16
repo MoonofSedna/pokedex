@@ -1,25 +1,18 @@
-import firebase from "@/firebase";
-import { User } from "@/interfaces/user";
-import { privateRouters } from "@/utils/functions/private-routes";
-import { onAuthStateChanged } from "firebase/auth";
 import React, {
-  ReactNode,
   createContext,
   useEffect,
   useState,
 } from "react";
-
-interface UserPrividerProps {
-  children: ReactNode;
-}
-
-interface UserContextInterface {
-  user: User | null;
-  loading: boolean;
-  updateUser:
-    | ((user: User | null) => void)
-    | null;
-}
+import { onAuthStateChanged } from "firebase/auth";
+import firebase from "@/firebase";
+// interfaces
+import {
+  User,
+  UserContextInterface,
+  UserProviderProps,
+} from "@/interfaces/user";
+// utils
+import { routeGuard } from "@/utils/functions/route-guard";
 
 const initialState: UserContextInterface =
   {
@@ -32,7 +25,7 @@ export const UserContext =
   createContext(initialState);
 
 export default function UserContextProvider(
-  props: UserPrividerProps
+  props: UserProviderProps
 ) {
   const [user, setUser] = useState(
     initialState.user
@@ -51,7 +44,7 @@ export default function UserContextProvider(
       onAuthStateChanged(
         firebase.auth,
         async (authUser) => {
-          privateRouters(authUser?.uid);
+          routeGuard(authUser?.uid);
 
           if (authUser) {
             const favList =
@@ -70,8 +63,9 @@ export default function UserContextProvider(
                 [],
             };
             setUser(user);
-            setLoading(false);
           }
+
+          setLoading(false);
         }
       );
     return () => {

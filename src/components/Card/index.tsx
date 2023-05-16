@@ -16,7 +16,7 @@ import { pokemonTypes } from "@/utils/pokemon-types";
 // styles
 import * as C from "./styles";
 
-function Card({
+export default memo(function Card({
   pokemon,
   onClick,
 }: CardProps) {
@@ -97,6 +97,4 @@ function Card({
       </C.CardFooter>
     </C.CardContainer>
   );
-}
-
-export default memo(Card);
+});

@@ -1,4 +1,7 @@
-import { useState } from "react";
+import {
+  useCallback,
+  useState,
+} from "react";
 // components
 import CardGrid from "@/components/CardGrid";
 import MainCard from "@/components/MainCard";
@@ -26,18 +29,14 @@ import {
 } from "@/utils/constant";
 
 export default function Home() {
-  const [
-    selectedType,
-    setSelectedType,
-  ] = useState<PokemonType>(
-    DEFAULT_TYPE
-  );
-  const [
-    selectedGeneration,
-    setSelectedGeneration,
-  ] = useState<Generation>(
-    DEFAULT_GENERATION
-  );
+  const [filters, setFilters] =
+    useState<{
+      type: PokemonType;
+      generation: Generation;
+    }>({
+      type: DEFAULT_TYPE,
+      generation: DEFAULT_GENERATION,
+    });
 
   const {
     pokemons,
@@ -49,8 +48,8 @@ export default function Home() {
   } = usePokemon();
 
   const paginationCount =
-    selectedType === DEFAULT_TYPE
-      ? selectedGeneration.limit
+    filters.type === DEFAULT_TYPE
+      ? filters.generation.limit
       : pokemonsByType.length;
 
   const {
@@ -63,17 +62,31 @@ export default function Home() {
     paginateByType,
     paginateByGeneration,
   } = usePagination(
-    selectedType,
-    selectedGeneration,
+    filters.type,
+    filters.generation,
     pokemons,
     pokemonsByType,
     fetchPokemons
   );
 
   const onPageChange = () =>
-    selectedType === DEFAULT_TYPE
+    filters.type === DEFAULT_TYPE
       ? paginateByGeneration()
       : paginateByType(setPokemons);
+
+  const handleFilterUpdate =
+    useCallback(
+      (
+        type: PokemonType,
+        generation: Generation
+      ) => {
+        setFilters({
+          type,
+          generation,
+        });
+      },
+      []
+    );
 
   return (
     <>
@@ -89,28 +102,18 @@ export default function Home() {
             footer={
               <Filter
                 selectedType={
-                  selectedType
+                  filters.type
                 }
                 selectedGeneration={
-                  selectedGeneration
+                  filters.generation
                 }
-                updateFilter={(
-                  type,
-                  generation
-                ) => {
-                  setSelectedType(type);
-                  setSelectedGeneration(
-                    generation
-                  );
-                }}
+                updateFilter={
+                  handleFilterUpdate
+                }
                 fetchPokemons={
                   fetchPokemons
                 }
-                setLoading={(
-                  isLoading
-                ) => {
-                  setLoading(isLoading);
-                }}
+                setLoading={setLoading}
                 updatePokemonList={
                   setPokemons
                 }
@@ -119,9 +122,9 @@ export default function Home() {
           />
           <Breadcrumb
             generation={
-              selectedGeneration
+              filters.generation
             }
-            type={selectedType}
+            type={filters.type}
             count={
               pokemonsByType.length
             }
