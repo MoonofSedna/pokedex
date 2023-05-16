@@ -1,15 +1,18 @@
-import { memo } from "react";
-import Image from "next/image";
+import {
+  memo,
+  useContext,
+} from "react";
 import { useRouter } from "next/router";
+import Image from "next/image";
 import Link from "next/link";
-import { RootState } from "@/store";
-import { useSelector } from "react-redux";
 // components
 import Icon from "../Icon";
 import Badge from "../Badge/Badge";
 import Button from "../Button";
 import Divider from "../Divider";
 import LikeButton from "../LikeButton";
+// context
+import { UserContext } from "@/context/userContext";
 // interfaces
 import { MainCardProps } from "@/interfaces/components";
 // utils
@@ -23,14 +26,15 @@ function MainCard({
   footer,
 }: MainCardProps) {
   const router = useRouter();
-  const { user } = useSelector(
-    (state: RootState) => state.user
+  const { user } = useContext(
+    UserContext
   );
 
   const isFavorite =
     user?.favorites.find(
       (fav) => +fav === pokemon.id
     );
+
   const pokemonType = pokemon.types[0];
 
   const weight = pokemon.weight / 10;

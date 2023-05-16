@@ -1,9 +1,9 @@
 import {
+  useContext,
   useEffect,
   useRef,
   useState,
 } from "react";
-import { useSelector } from "react-redux";
 // components
 import Breadcrumb from "@/components/Breadcrumb";
 import Card from "@/components/Card";
@@ -12,12 +12,12 @@ import Loader from "@/components/Loader";
 import MainCard from "@/components/MainCard";
 import DefaultMessage from "@/components/DefaultMessage";
 import Pagination from "@/components/Pagination";
+// context
+import { UserContext } from "@/context/userContext";
 // hooks
 import useRandomPokemon from "@/hooks/useRandomPokemon";
 // interfaces
 import { Pokemon } from "@/interfaces/pokemon";
-// store
-import { RootState } from "@/store";
 // utils
 import { getPokemonsById } from "@/utils/api/poke-api";
 import {
@@ -28,8 +28,8 @@ import {
 import Heart from "@/assets/icons/heart";
 
 export default function Favorites() {
-  const { user } = useSelector(
-    (state: RootState) => state.user
+  const { user } = useContext(
+    UserContext
   );
 
   const [pokemons, setPokemons] =

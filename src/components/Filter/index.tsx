@@ -1,9 +1,4 @@
 import SearchBar from "../SearchBar";
-import { RootState } from "@/store";
-import {
-  useDispatch,
-  useSelector,
-} from "react-redux";
 // components
 import Badge from "../Badge/Badge";
 import Button from "../Button";
@@ -13,9 +8,6 @@ import {
   Generation,
   PokemonType,
 } from "@/interfaces/pokemon";
-
-// store
-import { updatePokemonList } from "@/store/slices/pokemons";
 // styles
 import * as C from "./styles";
 // utils
@@ -27,40 +19,29 @@ import {
   DEFAULT_TYPE,
   PAGE_SIZE,
 } from "@/utils/constant";
-import { fetchPokemons } from "@/utils/functions/fetch-pokemons";
 
 export default function Filter({
+  fetchPokemons,
   selectedType,
   selectedGeneration,
+  updatePokemonList,
   setLoading,
   updateFilter,
 }: FilterProps) {
-  const dispatch = useDispatch();
-
-  const { pokemons } = useSelector(
-    (state: RootState) => state.pokemons
-  );
-
   const onSearch = async (
     search: string
   ) => {
-    if (!search) {
-      dispatch(
-        updatePokemonList(pokemons)
-      );
-      return;
-    }
+    if (!search) return;
 
     setLoading(true);
 
     const getPokemons =
       await getPokemonByName(search);
 
-    dispatch(
-      updatePokemonList(
-        getPokemons ? [getPokemons] : []
-      )
+    updatePokemonList(
+      getPokemons ? [getPokemons] : []
     );
+
     setLoading(false);
   };
 

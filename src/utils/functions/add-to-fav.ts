@@ -1,14 +1,14 @@
-// store
-import store from "@/store";
-import { updateUser } from "@/store/slices/user";
 // firebase
 import firebase from "@/firebase";
 // interfaces
 import { User } from "@/interfaces/user";
 
 export const addToFav = async (
-  user: User,
-  pokemon: number
+  user: User | null,
+  pokemon: number,
+  updateUser:
+    | ((user: User | null) => void)
+    | null
 ) => {
   if (!user) return;
 
@@ -32,9 +32,7 @@ export const addToFav = async (
     favorites: favList,
   };
 
-  store.dispatch(
-    updateUser(userUpdated)
-  );
+  updateUser?.(userUpdated);
 
   const getFavList =
     await firebase.getDoc(user.id);

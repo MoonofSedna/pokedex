@@ -1,10 +1,9 @@
+import { useContext } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import {
-  useDispatch,
-  useSelector,
-} from "react-redux";
 import { useRouter } from "next/router";
+// context
+import { UserContext } from "@/context/userContext";
 // firebase
 import firebase from "@/firebase";
 // icons
@@ -12,24 +11,19 @@ import Home from "@/assets/icons/home";
 import Heart from "@/assets/icons/heart";
 // styles
 import * as C from "./styles";
-// store
-import { updateUser } from "@/store/slices/user";
-import { RootState } from "@/store";
 // logo
 import Logo from "@/assets/images/logo.png";
 
 export default function Navbar() {
   const router = useRouter();
-  const dispatch = useDispatch();
 
-  const { user } = useSelector(
-    (state: RootState) => state.user
-  );
+  const { user, updateUser } =
+    useContext(UserContext);
 
   const signOut = () => {
     firebase.logout();
     router.push("/");
-    dispatch(updateUser(null));
+    updateUser?.(null);
   };
 
   const path = router.pathname;

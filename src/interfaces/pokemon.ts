@@ -95,7 +95,7 @@ export interface Ability {
 }
 
 export interface Species {
-  name: string;
+  name: PokemonType;
   url: string;
 }
 

@@ -1,34 +1,30 @@
 import { useState } from "react";
-import { RootState } from "@/store";
+// interfaces
 import {
-  useDispatch,
-  useSelector,
-} from "react-redux";
-// store
-import { updatePokemonList } from "@/store/slices/pokemons";
+  Generation,
+  Pokemon,
+  PokemonType,
+} from "@/interfaces/pokemon";
 // utils
 import { getPokemonData } from "@/utils/api/poke-api";
 import { PAGE_SIZE } from "@/utils/constant";
-import { fetchPokemons } from "@/utils/functions/fetch-pokemons";
 import { sortData } from "@/utils/functions/sort-pokemon-data";
-import {
-  Generation,
-  PokemonType,
-} from "@/interfaces/pokemon";
 
 export default function usePagination(
   type: PokemonType,
-  generation: Generation
+  generation: Generation,
+  pokemons: Pokemon[],
+  pokemonsByType: number[],
+  fetchPokemons: (
+    offset: number,
+    limit: number,
+    type: string,
+    generation: Generation,
+    pokemons?: Pokemon[] | undefined
+  ) => Promise<void>
 ) {
-  const dispatch = useDispatch();
-
   const [loading, setLoading] =
     useState(false);
-  const { pokemonsByType, pokemons } =
-    useSelector(
-      (state: RootState) =>
-        state.pokemons
-    );
 
   const paginateByGeneration =
     async () => {
@@ -57,7 +53,11 @@ export default function usePagination(
       setLoading(false);
     };
 
-  const paginateByType = async () => {
+  const paginateByType = async (
+    updatePokemonList: (
+      pokemons: Pokemon[]
+    ) => void
+  ) => {
     setLoading(true);
 
     const page = Math.floor(
@@ -94,12 +94,11 @@ export default function usePagination(
         )
       );
 
-    dispatch(
-      updatePokemonList([
-        ...pokemons,
-        ...pokemonData,
-      ])
-    );
+    updatePokemonList([
+      ...pokemons,
+      ...pokemonData,
+    ]);
+
     setLoading(false);
   };
 

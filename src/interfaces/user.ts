@@ -1,5 +1,5 @@
 export interface User {
   id: string;
-  email: string;
+  email: string | null;
   favorites: number[];
 }

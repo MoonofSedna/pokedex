@@ -1,8 +1,4 @@
-import {
-  useEffect,
-  useState,
-} from "react";
-import { useSelector } from "react-redux";
+import { useState } from "react";
 // components
 import CardGrid from "@/components/CardGrid";
 import MainCard from "@/components/MainCard";
@@ -21,25 +17,15 @@ import {
 // hooks
 import useRandomPokemon from "@/hooks/useRandomPokemon";
 import usePagination from "@/hooks/usePagination";
-// store
-import { RootState } from "@/store";
+import usePokemon from "@/hooks/usePokemon";
 // utils
 import {
   DEFAULT_GENERATION,
   DEFAULT_TYPE,
   PAGE_SIZE,
 } from "@/utils/constant";
-import { fetchPokemons } from "@/utils/functions/fetch-pokemons";
 
 export default function Home() {
-  const { pokemonsByType, pokemons } =
-    useSelector(
-      (state: RootState) =>
-        state.pokemons
-    );
-
-  const [loading, setLoading] =
-    useState<boolean>(true);
   const [
     selectedType,
     setSelectedType,
@@ -52,6 +38,15 @@ export default function Home() {
   ] = useState<Generation>(
     DEFAULT_GENERATION
   );
+
+  const {
+    pokemons,
+    setPokemons,
+    pokemonsByType,
+    loading,
+    setLoading,
+    fetchPokemons,
+  } = usePokemon();
 
   const paginationCount =
     selectedType === DEFAULT_TYPE
@@ -69,26 +64,16 @@ export default function Home() {
     paginateByGeneration,
   } = usePagination(
     selectedType,
-    selectedGeneration
+    selectedGeneration,
+    pokemons,
+    pokemonsByType,
+    fetchPokemons
   );
 
   const onPageChange = () =>
     selectedType === DEFAULT_TYPE
       ? paginateByGeneration()
-      : paginateByType();
-
-  useEffect(() => {
-    const getPokemons = async () => {
-      await fetchPokemons(
-        DEFAULT_GENERATION.offset,
-        PAGE_SIZE,
-        DEFAULT_TYPE,
-        DEFAULT_GENERATION
-      );
-      setLoading(false);
-    };
-    getPokemons();
-  }, []);
+      : paginateByType(setPokemons);
 
   return (
     <>
@@ -118,11 +103,17 @@ export default function Home() {
                     generation
                   );
                 }}
+                fetchPokemons={
+                  fetchPokemons
+                }
                 setLoading={(
                   isLoading
                 ) => {
                   setLoading(isLoading);
                 }}
+                updatePokemonList={
+                  setPokemons
+                }
               />
             }
           />

@@ -1,3 +1,4 @@
+// interfaces
 import {
   Generation,
   Pokemon,
@@ -53,6 +54,16 @@ export interface FilterProps {
   setLoading: (
     isLoading: boolean
   ) => void;
+  updatePokemonList: (
+    poekmons: Pokemon[]
+  ) => void;
+  fetchPokemons: (
+    offset: number,
+    limit: number,
+    type: string,
+    generation: Generation,
+    pokemons?: Pokemon[] | undefined
+  ) => Promise<void>;
   updateFilter: (
     type: PokemonType,
     generation: Generation

@@ -1,11 +1,14 @@
-import { memo } from "react";
+import {
+  memo,
+  useContext,
+} from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { RootState } from "@/store";
-import { useSelector } from "react-redux";
 // components
 import Badge from "../Badge/Badge";
 import LikeButton from "../LikeButton";
+// context
+import { UserContext } from "@/context/userContext";
 // interfaces
 import { CardProps } from "@/interfaces/components";
 // utils
@@ -17,8 +20,8 @@ function Card({
   pokemon,
   onClick,
 }: CardProps) {
-  const { user } = useSelector(
-    (state: RootState) => state.user
+  const { user } = useContext(
+    UserContext
   );
 
   const pokemonType = pokemon.types[0];

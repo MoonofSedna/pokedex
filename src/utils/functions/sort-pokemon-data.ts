@@ -1,20 +1,14 @@
 // interfaces
-import { PokemonDefaultData } from "@/interfaces/pokemon";
+import {
+  Pokemon,
+  PokemonDefaultData,
+} from "@/interfaces/pokemon";
 // utils
-import { generations } from "../generations";
 import { getImageURL } from "./get-image-url";
 
 export const sortData = (
   pokemonData: PokemonDefaultData
-) => {
-  if (
-    pokemonData.id >
-    generations[generations.length - 1]
-      .limit
-  ) {
-    return;
-  }
-
+): Pokemon => {
   const image = getImageURL(
     pokemonData.id
   );
