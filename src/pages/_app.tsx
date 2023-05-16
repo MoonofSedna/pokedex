@@ -1,7 +1,6 @@
 import type { AppProps } from "next/app";
 import { Provider } from "react-redux";
 import Head from "next/head";
-import { AppContextType } from "next/dist/shared/lib/utils";
 // fonts
 import { Fira_Sans } from "next/font/google";
 // components
@@ -15,7 +14,6 @@ import store from "@/store";
 import "@/styles/globals.css";
 // utils
 import GlobalStyles from "@/utils/global-styles";
-import { privateRouters } from "@/utils/functions/private-routes";
 
 const firaSans = Fira_Sans({
   weight: ["500", "600", "800"],
@@ -53,12 +51,3 @@ export default function App({
     </Provider>
   );
 }
-
-App.getInitialProps = async ({
-  ctx,
-}: AppContextType) => {
-  privateRouters(ctx);
-  return {
-    pageProps: {},
-  };
-};

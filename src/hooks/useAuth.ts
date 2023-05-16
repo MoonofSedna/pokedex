@@ -2,16 +2,13 @@ import {
   useState,
   useEffect,
 } from "react";
-import {
-  deleteCookie,
-  setCookie,
-} from "cookies-next";
 import { onAuthStateChanged } from "firebase/auth";
 // firebase
 import firebase from "@/firebase";
 // store
 import store from "@/store";
 import { updateUser } from "@/store/slices/user";
+import { privateRouters } from "@/utils/functions/private-routes";
 
 export default function useAuth() {
   const [loading, setLoading] =
@@ -22,12 +19,9 @@ export default function useAuth() {
       onAuthStateChanged(
         firebase.auth,
         async (authUser) => {
-          if (authUser) {
-            setCookie(
-              "user-token",
-              authUser.refreshToken
-            );
+          privateRouters(authUser?.uid);
 
+          if (authUser) {
             const favList =
               await firebase.getDoc(
                 authUser.uid
@@ -47,8 +41,6 @@ export default function useAuth() {
             store.dispatch(
               updateUser(user)
             );
-          } else {
-            deleteCookie("user-token");
           }
           setLoading(false);
         }

@@ -4,7 +4,6 @@ import {
   useDispatch,
   useSelector,
 } from "react-redux";
-import { deleteCookie } from "cookies-next";
 import { useRouter } from "next/router";
 // firebase
 import firebase from "@/firebase";
@@ -31,7 +30,6 @@ export default function Navbar() {
     firebase.logout();
     router.push("/");
     dispatch(updateUser(null));
-    deleteCookie("user-token");
   };
 
   const path = router.pathname;

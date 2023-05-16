@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { useRouter } from "next/router";
-import { setCookie } from "cookies-next";
 import { FirebaseError } from "firebase/app";
 // components
 import Form from "@/components/Form";
@@ -37,16 +36,10 @@ export default function Login() {
   async function getUser() {
     setSubmitting(true);
     try {
-      const user = await firebase.login(
+      await firebase.login(
         email,
         password
       );
-
-      setCookie(
-        "user-token",
-        user.refreshToken
-      );
-
       router.push("/");
     } catch (e) {
       const { message } =

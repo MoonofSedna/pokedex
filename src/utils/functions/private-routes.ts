@@ -1,17 +1,8 @@
-import {
-  NextApiRequest,
-  NextPageContext,
-} from "next";
+import Router from "next/router";
 
 export const privateRouters = (
-  context: NextPageContext
+  userToken?: string
 ) => {
-  const request =
-    context.req as NextApiRequest;
-
-  const userToken =
-    request?.cookies["user-token"];
-
   const paths = {
     "/login": userToken,
     "/signin": userToken,
@@ -19,16 +10,11 @@ export const privateRouters = (
   };
 
   const path =
-    context?.pathname as keyof typeof paths;
+    Router.pathname as keyof typeof paths;
 
   const redirect = paths[path];
 
   if (redirect) {
-    context.res?.writeHead(302, {
-      Location: "/",
-      "Content-Type":
-        "text/html; charset=utf-8;",
-    });
-    context.res?.end();
+    Router.push("/");
   }
 };
