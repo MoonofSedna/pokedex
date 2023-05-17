@@ -38,6 +38,7 @@ export async function getServerSideProps(
   params: any
 ) {
   const { id } = params.query;
+
   const pokemon = await getPokemonData(
     id
   );

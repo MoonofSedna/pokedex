@@ -53,34 +53,48 @@ export const getPokemons = async (
 export const getPokemonData = async (
   pokemonId: string | number
 ) => {
-  const { data } = await PokeApi.get(
-    `pokemon/${pokemonId}`
-  );
-  return data;
+  try {
+    const { data } = await PokeApi.get(
+      `pokemon/${pokemonId}`
+    );
+    return data;
+  } catch (error) {
+    throw new Error(
+      "Error fetching pokemon data"
+    );
+  }
 };
 
 export const getPokemonDescription =
   async (pokemonId: number) => {
-    const { data } = await PokeApi.get(
-      `pokemon-species/${pokemonId}`
-    );
-
-    const description =
-      data?.flavor_text_entries
-        .find(
-          (entry: {
-            language: {
-              name: string;
-            };
-          }) =>
-            entry.language.name === "en"
-        )
-        ?.flavor_text.replaceAll(
-          /[\f]/g,
-          " "
+    try {
+      const { data } =
+        await PokeApi.get(
+          `pokemon-species/${pokemonId}`
         );
 
-    return description;
+      const description =
+        data?.flavor_text_entries
+          .find(
+            (entry: {
+              language: {
+                name: string;
+              };
+            }) =>
+              entry.language.name ===
+              "en"
+          )
+          ?.flavor_text.replaceAll(
+            /[\f]/g,
+            " "
+          );
+
+      return description;
+    } catch (error) {
+      throw new Error(
+        "Error fetching pokemon description"
+      );
+    }
   };
 
 export const fetchPokemonByType =
@@ -88,91 +102,104 @@ export const fetchPokemonByType =
     type: string,
     generation: (typeof generations)[0]
   ) => {
-    const { data } = await PokeApi.get(
-      `type/${type}`
-    );
+    try {
+      const { data } =
+        await PokeApi.get(
+          `type/${type}`
+        );
 
-    const pokemonsId: number[] =
-      data.pokemon.map((data: any) =>
-        parseInt(
-          data.pokemon.url.match(
-            /\/(\d+)\//
-          )[1]
-        )
+      const pokemonsId: number[] =
+        data.pokemon.map((data: any) =>
+          parseInt(
+            data.pokemon.url.match(
+              /\/(\d+)\//
+            )[1]
+          )
+        );
+
+      const filterTypeByGeneration =
+        pokemonsId.filter(
+          (pokemonId: number) =>
+            pokemonId >
+              generation.offset &&
+            pokemonId <=
+              generation.limit +
+                generation.offset
+        );
+
+      const selectedPokemons =
+        filterTypeByGeneration.slice(
+          0,
+          PAGE_SIZE
+        );
+
+      const typeList =
+        await Promise.all(
+          selectedPokemons.map(
+            async (pokemon: number) => {
+              const pokemonData =
+                await getPokemonData(
+                  pokemon
+                );
+              return sortData(
+                pokemonData
+              );
+            }
+          )
+        );
+
+      return {
+        total: filterTypeByGeneration,
+        pokemons: typeList,
+      };
+    } catch (error) {
+      throw new Error(
+        "Error fetching pokemons by type"
       );
-
-    const filterTypeByGeneration =
-      pokemonsId.filter(
-        (pokemonId: number) =>
-          pokemonId >
-            generation.offset &&
-          pokemonId <=
-            generation.limit +
-              generation.offset
-      );
-
-    const selectedPokemons =
-      filterTypeByGeneration.slice(
-        0,
-        PAGE_SIZE
-      );
-
-    const typeList = await Promise.all(
-      selectedPokemons.map(
-        async (pokemon: number) => {
-          const pokemonData =
-            await getPokemonData(
-              pokemon
-            );
-          return sortData(pokemonData);
-        }
-      )
-    );
-
-    return {
-      total: filterTypeByGeneration,
-      pokemons: typeList,
-    };
+    }
   };
 
 export const getPokemonByName = async (
   name: string
 ) => {
-  try {
-    const pokemonData =
-      await getPokemonData(
-        name.toLocaleLowerCase()
-      );
+  const pokemonData =
+    await getPokemonData(
+      name.toLocaleLowerCase()
+    );
 
-    return sortData(pokemonData);
-  } catch (error) {
-    return null;
-  }
+  return sortData(pokemonData);
 };
 
 export const fetchPokemonEvolution =
   async (
     pokemonId: number | string
   ) => {
-    const { data } = await PokeApi.get(
-      `pokemon-species/${pokemonId}`
-    );
-    const evolutionId =
-      data.evolution_chain.url.match(
-        /\/(\d+)\//
-      )[1];
+    try {
+      const { data } =
+        await PokeApi.get(
+          `pokemon-species/${pokemonId}`
+        );
+      const evolutionId =
+        data.evolution_chain.url.match(
+          /\/(\d+)\//
+        )[1];
 
-    const evolutionData =
-      await PokeApi.get(
-        `evolution-chain/${evolutionId}`
+      const evolutionData =
+        await PokeApi.get(
+          `evolution-chain/${evolutionId}`
+        );
+
+      const evolutions =
+        parseEvolutionChain(
+          evolutionData.data.chain
+        );
+
+      return evolutions;
+    } catch (error) {
+      throw new Error(
+        "Error fetching pokemon evolutions"
       );
-
-    const evolutions =
-      parseEvolutionChain(
-        evolutionData.data.chain
-      );
-
-    return evolutions;
+    }
   };
 
 export const getPokemonsById = async (
@@ -186,11 +213,17 @@ export const getPokemonsById = async (
   );
   const data = await Promise.all(
     page.map(async (pokemon) => {
-      const pokeData =
-        await getPokemonData(pokemon);
-      const formattedData =
-        sortData(pokeData);
-      return formattedData as Pokemon;
+      try {
+        const pokeData =
+          await getPokemonData(pokemon);
+        const formattedData =
+          sortData(pokeData);
+        return formattedData as Pokemon;
+      } catch (error) {
+        throw new Error(
+          "Pokemons not found"
+        );
+      }
     })
   );
   return data;

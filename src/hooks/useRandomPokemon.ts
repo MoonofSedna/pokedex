@@ -1,8 +1,12 @@
 import {
+  useCallback,
+  useContext,
   useEffect,
   useRef,
   useState,
 } from "react";
+// context
+import { AlertContext } from "@/context/alertContext";
 // interfaces
 import {
   Pokemon,
@@ -17,7 +21,8 @@ import {
 } from "@/utils/api/poke-api";
 
 export default function useRandomPokemon() {
-  const clearRef = useRef(true);
+  const isMounted = useRef(true);
+
   const [
     randomPokemon,
     setRandomPokemon,
@@ -25,56 +30,68 @@ export default function useRandomPokemon() {
   const [loading, setLoading] =
     useState(true);
 
-  const getRandomPokemon = async () => {
-    setLoading(true);
+  const { alert } = useContext(
+    AlertContext
+  );
 
-    const min = 1;
+  const getRandomPokemon =
+    useCallback(async () => {
+      setLoading(true);
 
-    const randomIndex = Math.floor(
-      Math.random() *
-        (generations[
-          generations.length - 1
-        ].limit -
-          min +
-          1) +
-        min
-    );
+      const min = 1;
 
-    const randomPokemon =
-      await getPokemonData(randomIndex);
+      const randomIndex = Math.floor(
+        Math.random() *
+          (generations[
+            generations.length - 1
+          ].limit -
+            min +
+            1) +
+          min
+      );
 
-    try {
-      const description =
-        await getPokemonDescription(
-          randomPokemon.id
+      try {
+        const randomPokemon =
+          await getPokemonData(
+            randomIndex
+          );
+
+        const description =
+          await getPokemonDescription(
+            randomPokemon.id
+          );
+
+        setRandomPokemon({
+          ...randomPokemon,
+          description,
+          types:
+            randomPokemon.types.map(
+              (type: Type) =>
+                type.type.name
+            ),
+          img: getImageURL(
+            randomPokemon.id
+          ),
+        });
+      } catch (e) {
+        const error = e as Error;
+        alert(
+          `Error fetching header data: ${error.message}`
         );
-
-      setRandomPokemon({
-        ...randomPokemon,
-        description,
-        types: randomPokemon.types.map(
-          (type: Type) => type.type.name
-        ),
-        img: getImageURL(
-          randomPokemon.id
-        ),
-      });
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setLoading(false);
-    }
-  };
+      } finally {
+        setLoading(false);
+      }
+    }, [alert]);
 
   useEffect(() => {
-    if (clearRef.current) {
+    if (isMounted.current) {
       getRandomPokemon();
     }
 
     return () => {
-      clearRef.current = false;
+      isMounted.current = false;
     };
-  }, []);
+  }, [getRandomPokemon]);
 
   return {
     randomPokemon,

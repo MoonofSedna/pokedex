@@ -1,3 +1,4 @@
+import { ReactNode } from "react";
 // interfaces
 import {
   Generation,
@@ -6,6 +7,21 @@ import {
   PokemonType,
 } from "./pokemon";
 import { User } from "./user";
+
+export interface Alerts {
+  message: string;
+  id: string | number;
+}
+
+export interface AlertContextProps {
+  alerts: Alerts[];
+  alert: (message: string) => void;
+  removeAlert: (id: number) => void;
+}
+
+export interface AlertProps {
+  alerts: Alerts[];
+}
 
 export interface BadgeProps {
   type: PokemonType;
@@ -114,7 +130,10 @@ export interface LikeButtonProps {
 
 export interface MainCardProps {
   header?: boolean;
-  pokemon: Pokemon | PokemonFullData;
+  pokemon:
+    | Pokemon
+    | PokemonFullData
+    | undefined;
   footer: React.ReactNode;
 }
 
@@ -128,6 +147,10 @@ export interface PaginationProps {
   loading?: boolean;
   onPageChange: () => void;
   showPagination: boolean;
+}
+
+export interface ProviderProps {
+  children: ReactNode;
 }
 
 export interface SearchBarProps {

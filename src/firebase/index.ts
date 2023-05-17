@@ -6,19 +6,12 @@ import {
   signInWithEmailAndPassword,
   updateProfile,
 } from "firebase/auth";
-
-import {
-  FirebaseStorage,
-  getStorage,
-} from "firebase/storage";
 import {
   getFirestore,
   collection,
   Firestore,
   CollectionReference,
-  Query,
   DocumentData,
-  collectionGroup,
   addDoc,
   WithFieldValue,
   doc,
@@ -28,14 +21,12 @@ import {
   QuerySnapshot,
   getDocs,
 } from "firebase/firestore";
-
+// config
 import firebaseConfig from "./config";
 
 class Firebase {
   auth: Auth;
-  storage: FirebaseStorage;
   db: Firestore;
-  collectionGroup: Query<DocumentData>;
   getCollection: CollectionReference<DocumentData>;
   getDoc: (
     id: string
@@ -51,13 +42,7 @@ class Firebase {
       firebaseConfig
     );
     this.auth = getAuth(app);
-    this.storage = getStorage(app);
     this.db = getFirestore(app);
-    this.collectionGroup =
-      collectionGroup(
-        this.db,
-        "pokemons"
-      );
     this.getCollection = collection(
       this.db,
       "pokemons"
@@ -78,16 +63,30 @@ class Firebase {
     };
   }
 
-  async addFavorite(
+  async addFavorites(
     values: WithFieldValue<DocumentData>
   ) {
     await addDoc(
-      collection(
-        firebase.db,
-        "pokemons"
-      ),
+      collection(this.db, "pokemons"),
       values
     );
+  }
+
+  async updateFavorites(
+    id: string,
+    favList: number[]
+  ) {
+    const getFavList =
+      await firebase.getDoc(id);
+
+    if (getFavList.docs[0]?.id) {
+      await firebase.updateDoc(
+        getFavList.docs[0]?.id,
+        {
+          favorites: favList,
+        }
+      );
+    }
   }
 
   async signin(
@@ -96,7 +95,7 @@ class Firebase {
   ) {
     const { user } =
       await createUserWithEmailAndPassword(
-        firebase.auth,
+        this.auth,
         email,
         password
       );
@@ -105,7 +104,7 @@ class Firebase {
       displayName: email,
     });
 
-    this.addFavorite({
+    this.addFavorites({
       user: user.uid,
       favorites: [],
     });
@@ -117,7 +116,7 @@ class Firebase {
   ) {
     const newUser =
       await signInWithEmailAndPassword(
-        firebase.auth,
+        this.auth,
         email,
         password
       );
@@ -125,7 +124,7 @@ class Firebase {
   }
 
   async logout() {
-    await firebase.auth.signOut();
+    await this.auth.signOut();
   }
 }
 

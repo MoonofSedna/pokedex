@@ -9,8 +9,8 @@ import firebase from "@/firebase";
 import {
   User,
   UserContextInterface,
-  UserProviderProps,
 } from "@/interfaces/user";
+import { ProviderProps } from "@/interfaces/components";
 // utils
 import { routeGuard } from "@/utils/functions/route-guard";
 
@@ -25,7 +25,7 @@ export const UserContext =
   createContext(initialState);
 
 export default function UserContextProvider(
-  props: UserProviderProps
+  props: ProviderProps
 ) {
   const [user, setUser] = useState(
     initialState.user

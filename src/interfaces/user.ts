@@ -1,15 +1,8 @@
-import { ReactNode } from "react";
-
 export interface User {
   id: string;
   email: string | null;
   favorites: number[];
 }
-
-export interface UserProviderProps {
-  children: ReactNode;
-}
-
 export interface UserContextInterface {
   user: User | null;
   loading: boolean;

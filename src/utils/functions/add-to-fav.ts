@@ -34,15 +34,15 @@ export const addToFav = async (
 
   updateUser?.(userUpdated);
 
-  const getFavList =
-    await firebase.getDoc(user.id);
-
-  if (getFavList.docs[0]?.id) {
-    await firebase.updateDoc(
-      getFavList.docs[0]?.id,
-      {
-        favorites: favList,
-      }
+  try {
+    await firebase.updateFavorites(
+      user.id,
+      favList
+    );
+  } catch (error) {
+    updateUser?.(user);
+    throw new Error(
+      "Error updating favorites"
     );
   }
 };

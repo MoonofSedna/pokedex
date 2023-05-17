@@ -1,4 +1,5 @@
 import {
+  useCallback,
   useContext,
   useEffect,
   useRef,
@@ -14,6 +15,7 @@ import DefaultMessage from "@/components/DefaultMessage";
 import Pagination from "@/components/Pagination";
 // context
 import { UserContext } from "@/context/userContext";
+import { AlertContext } from "@/context/alertContext";
 // hooks
 import useRandomPokemon from "@/hooks/useRandomPokemon";
 // interfaces
@@ -30,6 +32,10 @@ import Heart from "@/assets/icons/heart";
 export default function Favorites() {
   const { user } = useContext(
     UserContext
+  );
+
+  const { alert } = useContext(
+    AlertContext
   );
 
   const [pokemons, setPokemons] =
@@ -53,36 +59,32 @@ export default function Favorites() {
     randomPokemonLoading,
   } = useRandomPokemon();
 
-  const fetchPokemons = async (
-    offset: number,
-    limit: number,
-    favorites: number[]
-  ) => {
-    const data = await getPokemonsById(
-      offset,
-      limit,
-      favorites
-    );
+  const fetchPokemons = useCallback(
+    async (
+      offset: number,
+      limit: number,
+      favorites: number[]
+    ) => {
+      try {
+        const data =
+          await getPokemonsById(
+            offset,
+            limit,
+            favorites
+          );
 
-    setPokemons((prev) => [
-      ...prev,
-      ...data,
-    ]);
-  };
-
-  useEffect(() => {
-    if (!isMounted.current) {
-      fetchPokemons(
-        pagination.current.offset,
-        pagination.current.limit,
-        favorites.current
-      );
-    }
-
-    return () => {
-      isMounted.current = true;
-    };
-  }, []);
+        setPokemons((prev) => [
+          ...prev,
+          ...data,
+        ]);
+      } catch (error) {
+        alert(
+          "Error fetching pokemons"
+        );
+      }
+    },
+    [alert]
+  );
 
   const loadMore = async () => {
     pagination.current = {
@@ -122,6 +124,20 @@ export default function Favorites() {
     );
   };
 
+  useEffect(() => {
+    if (!isMounted.current) {
+      fetchPokemons(
+        pagination.current.offset,
+        pagination.current.limit,
+        favorites.current
+      );
+    }
+
+    return () => {
+      isMounted.current = true;
+    };
+  }, [fetchPokemons]);
+
   return randomPokemonLoading ? (
     <Loader />
   ) : (
@@ -137,10 +153,12 @@ export default function Favorites() {
           </h3>
         }
       />
-      <Breadcrumb
-        pokemons={pokemons.length}
-        count={favsCount}
-      />
+      {pokemons.length > 0 && (
+        <Breadcrumb
+          pokemons={pokemons.length}
+          count={favsCount}
+        />
+      )}
       {favsCount > 0 ? (
         <CardGrid>
           {pokemons.map(

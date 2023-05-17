@@ -96,9 +96,7 @@ export default function Home() {
         <>
           <MainCard
             header
-            pokemon={
-              randomPokemon as Pokemon
-            }
+            pokemon={randomPokemon}
             footer={
               <Filter
                 selectedType={

@@ -17,6 +17,7 @@ import { UserContext } from "@/context/userContext";
 import { MainCardProps } from "@/interfaces/components";
 // utils
 import { pokemonTypes } from "@/utils/pokemon-types";
+import { DEFAULT_TYPE } from "@/utils/constant";
 // styles
 import * as C from "./styles";
 
@@ -32,19 +33,23 @@ export default memo(function MainCard({
 
   const isFavorite =
     user?.favorites.find(
-      (fav) => +fav === pokemon.id
+      (fav) => +fav === pokemon?.id
     );
 
-  const pokemonType = pokemon.types[0];
+  const pokemonType = pokemon?.types[0];
 
-  const weight = pokemon.weight / 10;
-  const height = pokemon.height / 10;
+  const weight =
+    (pokemon?.weight || 0) / 10;
+  const height =
+    (pokemon?.height || 0) / 10;
 
   return (
     <C.Container>
       <C.Overlay
         background={
-          pokemonTypes[pokemonType]
+          pokemonTypes[
+            pokemonType || DEFAULT_TYPE
+          ]
         }
       />
       {!header && (
@@ -57,7 +62,7 @@ export default memo(function MainCard({
             width={40}
             height={40}
           />
-          {user && (
+          {user && pokemon && (
             <LikeButton
               className={`header ${
                 isFavorite
@@ -70,75 +75,77 @@ export default memo(function MainCard({
           )}
         </>
       )}
-      <C.CardBody>
-        <C.CardContent>
-          <span>
-            {`
+      {pokemon && (
+        <C.CardBody>
+          <C.CardContent>
+            <span>
+              {`
               #${pokemon.id
                 .toString()
                 .padStart(3, "0")}	
             `}
-          </span>
-          <h2>{pokemon.name}</h2>
-          <div className="pokemon-types">
-            {pokemon.types.map(
-              (type) => (
-                <Badge
-                  key={type}
-                  type={type}
+            </span>
+            <h2>{pokemon.name}</h2>
+            <div className="pokemon-types">
+              {pokemon.types.map(
+                (type) => (
+                  <Badge
+                    key={type}
+                    type={type}
+                  />
+                )
+              )}
+            </div>
+            <C.PokemonData>
+              <span>
+                <Icon
+                  name="height"
+                  width={20}
+                  height={20}
                 />
-              )
+                {height} M
+              </span>
+              <span>
+                <Icon
+                  name="weight"
+                  width={20}
+                  height={20}
+                />
+                {weight} KG
+              </span>
+            </C.PokemonData>
+            <p>{pokemon.description}</p>
+            {header && (
+              <Link
+                href={`/pokemon/${pokemon.id}`}
+              >
+                <Button width="100%">
+                  See More Details
+                </Button>
+              </Link>
             )}
-          </div>
-          <C.PokemonData>
-            <span>
+          </C.CardContent>
+          <Divider
+            icon={
               <Icon
-                name="height"
-                width={20}
-                height={20}
+                name={pokemon.types[0]}
+                width={35}
+                height={35}
               />
-              {height} M
-            </span>
-            <span>
-              <Icon
-                name="weight"
-                width={20}
-                height={20}
-              />
-              {weight} KG
-            </span>
-          </C.PokemonData>
-          <p>{pokemon.description}</p>
-          {header && (
-            <Link
-              href={`/pokemon/${pokemon.id}`}
-            >
-              <Button width="100%">
-                See More Details
-              </Button>
-            </Link>
-          )}
-        </C.CardContent>
-        <Divider
-          icon={
-            <Icon
-              name={pokemon.types[0]}
-              width={35}
-              height={35}
-            />
-          }
-        />
-        <C.CardContent>
-          <Image
-            className="pokemon-image"
-            src={pokemon.img}
-            alt={pokemon.name}
-            width={420}
-            height={420}
-            priority
+            }
           />
-        </C.CardContent>
-      </C.CardBody>
+          <C.CardContent>
+            <Image
+              className="pokemon-image"
+              src={pokemon.img}
+              alt={pokemon.name}
+              width={420}
+              height={420}
+              priority
+            />
+          </C.CardContent>
+        </C.CardBody>
+      )}
       {<C.Footer>{footer}</C.Footer>}
     </C.Container>
   );

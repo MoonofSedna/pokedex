@@ -1,6 +1,8 @@
 import {
   useCallback,
+  useContext,
   useEffect,
+  useRef,
   useState,
 } from "react";
 // interfaces
@@ -18,8 +20,11 @@ import {
   DEFAULT_TYPE,
   PAGE_SIZE,
 } from "@/utils/constant";
+import { AlertContext } from "@/context/alertContext";
 
 export default function usePokemon() {
+  const isMounted = useRef(true);
+
   const [isLoading, setIsLoading] =
     useState(true);
   const [pokemons, setPokemons] =
@@ -29,6 +34,10 @@ export default function usePokemon() {
     setPokemonsByType,
   ] = useState<number[]>([]);
 
+  const { alert } = useContext(
+    AlertContext
+  );
+
   const fetchPokemons = useCallback(
     async (
       offset: number,
@@ -37,40 +46,48 @@ export default function usePokemon() {
       generation: Generation,
       pokemons?: Pokemon[]
     ) => {
-      if (type === DEFAULT_TYPE) {
-        const pokeData =
-          await getPokemons(
-            limit,
-            offset
+      try {
+        if (type === DEFAULT_TYPE) {
+          const pokeData =
+            await getPokemons(
+              limit,
+              offset
+            );
+
+          const pokeList =
+            pokemons &&
+            pokemons?.length > 0
+              ? [
+                  ...pokemons,
+                  ...pokeData,
+                ]
+              : pokeData;
+
+          setPokemons(pokeList);
+        } else {
+          const pokeList =
+            await fetchPokemonByType(
+              type,
+              generation
+            );
+
+          setPokemonsByType(
+            pokeList.total
           );
 
-        const pokeList =
-          pokemons &&
-          pokemons?.length > 0
-            ? [...pokemons, ...pokeData]
-            : pokeData;
-
-        setPokemons(pokeList);
-      } else {
-        const pokeList =
-          await fetchPokemonByType(
-            type,
-            generation
+          setPokemons(
+            pokeList.pokemons.slice(
+              0,
+              PAGE_SIZE
+            )
           );
-
-        setPokemonsByType(
-          pokeList.total
-        );
-
-        setPokemons(
-          pokeList.pokemons.slice(
-            0,
-            PAGE_SIZE
-          )
-        );
+        }
+      } catch (e) {
+        const error = e as Error;
+        alert(`${error.message}`);
       }
     },
-    []
+    [alert]
   );
 
   const updatePokemonList = (
@@ -95,7 +112,14 @@ export default function usePokemon() {
       );
       setLoading(false);
     };
-    getPokemons();
+
+    if (isMounted.current) {
+      getPokemons();
+    }
+
+    return () => {
+      isMounted.current = false;
+    };
   }, [fetchPokemons]);
 
   return {

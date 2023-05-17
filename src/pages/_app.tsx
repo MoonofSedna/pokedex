@@ -4,6 +4,8 @@ import Head from "next/head";
 import { Fira_Sans } from "next/font/google";
 // components
 import Layout from "@/components/Layout";
+// context
+import AlertContextProvider from "@/context/alertContext";
 // context provider
 import UserContextProvider from "@/context/userContext";
 // styles
@@ -22,20 +24,22 @@ export default function App({
 }: AppProps) {
   return (
     <UserContextProvider>
-      <GlobalStyles />
-      <Head>
-        <title>Pokedex</title>
-        <meta
-          name="description"
-          content="Author: Bethania C Troconis,
+      <AlertContextProvider>
+        <GlobalStyles />
+        <Head>
+          <title>Pokedex</title>
+          <meta
+            name="description"
+            content="Author: Bethania C Troconis,
           email: bethanyctg@gmail.com"
-        />
-      </Head>
-      <Layout
-        className={firaSans.className}
-      >
-        <Component {...pageProps} />
-      </Layout>
+          />
+        </Head>
+        <Layout
+          className={firaSans.className}
+        >
+          <Component {...pageProps} />
+        </Layout>
+      </AlertContextProvider>
     </UserContextProvider>
   );
 }

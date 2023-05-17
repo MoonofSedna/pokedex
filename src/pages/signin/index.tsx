@@ -9,8 +9,6 @@ import firebase from "@/firebase";
 // hooks
 import useRandomPokemon from "@/hooks/useRandomPokemon";
 import useValidation from "@/hooks/useValidation";
-// interfaces
-import { Pokemon } from "@/interfaces/pokemon";
 // utils
 import { validateSignUp } from "@/utils/form-validations";
 
@@ -83,7 +81,7 @@ export default function SignIn() {
   ) : (
     <MainCard
       header
-      pokemon={randomPokemon as Pokemon}
+      pokemon={randomPokemon}
       footer={
         <Form
           fields={fields}
