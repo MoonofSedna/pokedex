@@ -1,6 +1,6 @@
 import SearchBar from "../SearchBar";
 // components
-import Badge from "../Badge/Badge";
+import Badge from "../Badge";
 import Button from "../Button";
 // interfaces
 import { FilterProps } from "@/interfaces/components";

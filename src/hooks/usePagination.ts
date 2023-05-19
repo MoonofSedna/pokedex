@@ -7,13 +7,19 @@ import {
 } from "@/interfaces/pokemon";
 // utils
 import { getPokemonData } from "@/utils/api/poke-api";
-import { PAGE_SIZE } from "@/utils/constant";
+import {
+  DEFAULT_TYPE,
+  PAGE_SIZE,
+} from "@/utils/constant";
 import { sortData } from "@/utils/functions/sort-pokemon-data";
 
 export default function usePagination(
   type: PokemonType,
   generation: Generation,
   pokemons: Pokemon[],
+  setPokemons: (
+    pokemons: Pokemon[]
+  ) => void,
   pokemonsByType: number[],
   fetchPokemons: (
     offset: number,
@@ -102,9 +108,13 @@ export default function usePagination(
     setLoading(false);
   };
 
+  const onPageChange = () =>
+    type === DEFAULT_TYPE
+      ? paginateByGeneration()
+      : paginateByType(setPokemons);
+
   return {
     paginationLoading: loading,
-    paginateByGeneration,
-    paginateByType,
+    onPageChange,
   };
 }

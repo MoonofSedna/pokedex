@@ -1,12 +1,17 @@
 export interface User {
   id: string;
   email: string | null;
-  favorites: number[];
 }
+
+export type Favorites = number;
 export interface UserContextInterface {
   user: User | null;
   loading: boolean;
-  updateUser:
-    | ((user: User | null) => void)
-    | null;
+  favorites: Favorites[];
+  updateUser: (
+    user: User | null
+  ) => void;
+  updateFavorites: (
+    favorites: Favorites[]
+  ) => void;
 }

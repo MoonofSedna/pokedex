@@ -3,13 +3,13 @@ import {
   useContext,
 } from "react";
 import { useRouter } from "next/router";
-import Image from "next/image";
 import Link from "next/link";
 // components
 import Icon from "../Icon";
-import Badge from "../Badge/Badge";
+import Badge from "../Badge";
 import Button from "../Button";
 import Divider from "../Divider";
+import Image from "../Image";
 import LikeButton from "../LikeButton";
 // context
 import { UserContext } from "@/context/userContext";
@@ -27,14 +27,12 @@ export default memo(function MainCard({
   footer,
 }: MainCardProps) {
   const router = useRouter();
-  const { user } = useContext(
-    UserContext
-  );
+  const { user, favorites } =
+    useContext(UserContext);
 
-  const isFavorite =
-    user?.favorites.find(
-      (fav) => +fav === pokemon?.id
-    );
+  const isFavorite = favorites.find(
+    (fav) => +fav === pokemon?.id
+  );
 
   const pokemonType = pokemon?.types[0];
 
@@ -142,6 +140,7 @@ export default memo(function MainCard({
               width={420}
               height={420}
               priority
+              draggable={false}
             />
           </C.CardContent>
         </C.CardBody>

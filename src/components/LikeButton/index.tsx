@@ -15,16 +15,21 @@ export default function LikeButton({
   className,
   onClick,
 }: LikeButtonProps) {
-  const { user, updateUser } =
-    useContext(UserContext);
+  const {
+    user,
+    favorites,
+    updateFavorites,
+  } = useContext(UserContext);
+
   return (
     <C.LikeButton
       className={className}
       onClick={() => {
         addToFav(
           user,
+          favorites,
           pokemon,
-          updateUser
+          updateFavorites
         );
         onClick?.(pokemon);
       }}

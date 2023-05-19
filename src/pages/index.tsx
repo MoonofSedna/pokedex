@@ -59,20 +59,15 @@ export default function Home() {
 
   const {
     paginationLoading,
-    paginateByType,
-    paginateByGeneration,
+    onPageChange,
   } = usePagination(
     filters.type,
     filters.generation,
     pokemons,
+    setPokemons,
     pokemonsByType,
     fetchPokemons
   );
-
-  const onPageChange = () =>
-    filters.type === DEFAULT_TYPE
-      ? paginateByGeneration()
-      : paginateByType(setPokemons);
 
   const handleFilterUpdate =
     useCallback(

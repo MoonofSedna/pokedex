@@ -116,6 +116,16 @@ export interface IconProps {
   onClick?: () => void;
 }
 
+export interface ImageProps {
+  src: string;
+  alt: string;
+  width: number;
+  height: number;
+  priority: boolean;
+  draggable: boolean;
+  className?: string;
+}
+
 export interface LayoutProps {
   className?: string;
   children: React.ReactNode;

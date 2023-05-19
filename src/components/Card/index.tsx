@@ -3,9 +3,9 @@ import {
   useContext,
 } from "react";
 import Link from "next/link";
-import Image from "next/image";
 // components
-import Badge from "../Badge/Badge";
+import Badge from "../Badge";
+import Image from "../Image";
 import LikeButton from "../LikeButton";
 // context
 import { UserContext } from "@/context/userContext";
@@ -20,16 +20,14 @@ export default memo(function Card({
   pokemon,
   onClick,
 }: CardProps) {
-  const { user } = useContext(
-    UserContext
-  );
+  const { user, favorites } =
+    useContext(UserContext);
 
   const pokemonType = pokemon.types[0];
 
-  const isFavorite =
-    user?.favorites.find(
-      (fav) => +fav === pokemon.id
-    );
+  const isFavorite = favorites.find(
+    (fav) => fav === pokemon.id
+  );
 
   return (
     <C.CardContainer>
@@ -68,6 +66,7 @@ export default memo(function Card({
           width={250}
           height={250}
           priority
+          draggable={false}
         />
       </C.CardBody>
       <C.CardFooter

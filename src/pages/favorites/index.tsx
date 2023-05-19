@@ -1,10 +1,4 @@
-import {
-  useCallback,
-  useContext,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import { useContext } from "react";
 // components
 import Breadcrumb from "@/components/Breadcrumb";
 import Card from "@/components/Card";
@@ -15,128 +9,30 @@ import DefaultMessage from "@/components/DefaultMessage";
 import Pagination from "@/components/Pagination";
 // context
 import { UserContext } from "@/context/userContext";
-import { AlertContext } from "@/context/alertContext";
 // hooks
 import useRandomPokemon from "@/hooks/useRandomPokemon";
 // interfaces
 import { Pokemon } from "@/interfaces/pokemon";
-// utils
-import { getPokemonsById } from "@/utils/api/poke-api";
-import {
-  DEFAULT_GENERATION,
-  PAGE_SIZE,
-} from "@/utils/constant";
 // icons
 import Heart from "@/assets/icons/heart";
+import useFavorites from "@/hooks/useFavorites";
 
 export default function Favorites() {
-  const { user } = useContext(
+  const { favorites } = useContext(
     UserContext
   );
 
-  const { alert } = useContext(
-    AlertContext
-  );
-
-  const [pokemons, setPokemons] =
-    useState<Pokemon[]>([]);
-
-  const favsCount =
-    user?.favorites.length ||
-    DEFAULT_GENERATION.offset;
-
-  const isMounted = useRef(false);
-  const favorites = useRef([
-    ...(user?.favorites || []),
-  ]);
-  const pagination = useRef({
-    offset: DEFAULT_GENERATION.offset,
-    limit: PAGE_SIZE,
-  });
+  const {
+    pokemons,
+    count,
+    loadMore,
+    removePokemon,
+  } = useFavorites(favorites || []);
 
   const {
     randomPokemon,
     randomPokemonLoading,
   } = useRandomPokemon();
-
-  const fetchPokemons = useCallback(
-    async (
-      offset: number,
-      limit: number,
-      favorites: number[]
-    ) => {
-      try {
-        const data =
-          await getPokemonsById(
-            offset,
-            limit,
-            favorites
-          );
-
-        setPokemons((prev) => [
-          ...prev,
-          ...data,
-        ]);
-      } catch (error) {
-        alert(
-          "Error fetching pokemons"
-        );
-      }
-    },
-    [alert]
-  );
-
-  const loadMore = async () => {
-    pagination.current = {
-      offset: pokemons.length,
-      limit:
-        pokemons.length + PAGE_SIZE,
-    };
-
-    await fetchPokemons(
-      pokemons.length,
-      pokemons.length + PAGE_SIZE,
-      favorites.current
-    );
-  };
-
-  const removePokemon = (
-    id: number
-  ) => {
-    const newPokemonList =
-      pokemons.filter(
-        (poke) => poke.id !== id
-      );
-
-    setPokemons(newPokemonList);
-
-    const newFavorites =
-      favorites.current.filter(
-        (poke) => poke !== id
-      );
-
-    favorites.current = newFavorites;
-
-    fetchPokemons(
-      newPokemonList.length,
-      newPokemonList.length + 1,
-      newFavorites
-    );
-  };
-
-  useEffect(() => {
-    if (!isMounted.current) {
-      fetchPokemons(
-        pagination.current.offset,
-        pagination.current.limit,
-        favorites.current
-      );
-    }
-
-    return () => {
-      isMounted.current = true;
-    };
-  }, [fetchPokemons]);
 
   return randomPokemonLoading ? (
     <Loader />
@@ -156,10 +52,10 @@ export default function Favorites() {
       {pokemons.length > 0 && (
         <Breadcrumb
           pokemons={pokemons.length}
-          count={favsCount}
+          count={count}
         />
       )}
-      {favsCount > 0 ? (
+      {count > 0 ? (
         <CardGrid>
           {pokemons.map(
             (pokemon: Pokemon) => (
@@ -179,7 +75,7 @@ export default function Favorites() {
           pokemons.length > 0
         }
         pokemons={pokemons.length}
-        count={favsCount}
+        count={count}
         onPageChange={loadMore}
       />
     </>

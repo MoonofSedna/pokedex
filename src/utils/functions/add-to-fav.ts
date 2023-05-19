@@ -1,19 +1,24 @@
 // firebase
 import firebase from "@/firebase";
 // interfaces
-import { User } from "@/interfaces/user";
+import {
+  Favorites,
+  User,
+} from "@/interfaces/user";
 
 export const addToFav = async (
   user: User | null,
+  favorites: Favorites[],
   pokemon: number,
-  updateUser:
-    | ((user: User | null) => void)
-    | null
+  updateFavorites: (
+    favorites: Favorites[]
+  ) => void
 ) => {
   if (!user) return;
 
-  let favList: number[] =
-    user.favorites;
+  let favList: number[] = [
+    ...favorites,
+  ];
 
   const checkFav = favList.find(
     (fav) => fav === pokemon
@@ -27,12 +32,7 @@ export const addToFav = async (
     favList = [pokemon, ...favList];
   }
 
-  const userUpdated = {
-    ...user,
-    favorites: favList,
-  };
-
-  updateUser?.(userUpdated);
+  updateFavorites(favList);
 
   try {
     await firebase.updateFavorites(
@@ -40,7 +40,7 @@ export const addToFav = async (
       favList
     );
   } catch (error) {
-    updateUser?.(user);
+    updateFavorites?.(favorites);
     throw new Error(
       "Error updating favorites"
     );

@@ -23,7 +23,7 @@ export default function Navbar() {
   const signOut = () => {
     firebase.logout();
     router.replace("/");
-    updateUser?.(null);
+    updateUser(null);
   };
 
   const path = router.pathname;

@@ -6,10 +6,7 @@ import React, {
 import { onAuthStateChanged } from "firebase/auth";
 import firebase from "@/firebase";
 // interfaces
-import {
-  User,
-  UserContextInterface,
-} from "@/interfaces/user";
+import { UserContextInterface } from "@/interfaces/user";
 import { ProviderProps } from "@/interfaces/components";
 // utils
 import { routeGuard } from "@/utils/functions/route-guard";
@@ -17,8 +14,10 @@ import { routeGuard } from "@/utils/functions/route-guard";
 const initialState: UserContextInterface =
   {
     user: null,
+    favorites: [],
     loading: true,
-    updateUser: null,
+    updateUser: () => {},
+    updateFavorites: () => {},
   };
 
 export const UserContext =
@@ -30,14 +29,10 @@ export default function UserContextProvider(
   const [user, setUser] = useState(
     initialState.user
   );
+  const [favorites, setFavorites] =
+    useState(initialState.favorites);
   const [loading, setLoading] =
     useState(initialState.loading);
-
-  const updateUser = (
-    user: User | null
-  ) => {
-    setUser(user);
-  };
 
   useEffect(() => {
     const unsubscribe =
@@ -58,11 +53,13 @@ export default function UserContextProvider(
             const user = {
               id: authUser.uid,
               email: authUser.email,
-              favorites:
-                favListData?.favorites ||
-                [],
             };
+
             setUser(user);
+            setFavorites(
+              favListData?.favorites ||
+                []
+            );
           }
 
           setLoading(false);
@@ -77,8 +74,10 @@ export default function UserContextProvider(
     <UserContext.Provider
       value={{
         user,
+        favorites,
         loading,
-        updateUser,
+        updateUser: setUser,
+        updateFavorites: setFavorites,
       }}
     >
       {props.children}
