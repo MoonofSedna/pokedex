@@ -40,7 +40,7 @@ const Badge = styled.label<{
     line-height: 0;
   }
   &:has(input:disabled) {
-    opacity: 0.6;
+    opacity: 0.8;
     cursor: default;
     & span:before {
       cursor: default;

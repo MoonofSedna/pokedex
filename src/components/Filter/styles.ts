@@ -25,7 +25,7 @@ const Generations = styled.div`
       color: var(--white);
     }
     &[disabled] {
-      opacity: 0.6;
+      opacity: 0.8;
       cursor: default;
     }
   }
