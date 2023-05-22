@@ -94,6 +94,7 @@ export default function Home() {
             pokemon={randomPokemon}
             footer={
               <Filter
+                loading={loading}
                 selectedType={
                   filters.type
                 }

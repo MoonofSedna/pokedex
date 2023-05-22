@@ -21,6 +21,7 @@ import {
 } from "@/utils/constant";
 
 export default function Filter({
+  loading,
   fetchPokemons,
   selectedType,
   selectedGeneration,
@@ -125,6 +126,7 @@ export default function Filter({
                 ? "active"
                 : ""
             }
+            disabled={loading}
             onClick={() => {
               filterByGeneration(gen);
             }}
@@ -139,17 +141,16 @@ export default function Filter({
             return (
               <Badge
                 key={pokemonType}
+                disabled={loading}
                 type={
                   pokemonType as PokemonType
                 }
                 selectedType={
                   selectedType
                 }
-                onClick={() =>
-                  filterByType(
-                    pokemonType as PokemonType
-                  )
-                }
+                onClick={(
+                  type: PokemonType
+                ) => filterByType(type)}
               />
             );
           }

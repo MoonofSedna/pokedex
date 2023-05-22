@@ -168,7 +168,7 @@ const CardFooter = styled.div<{
     justify-content: center;
     gap: 0.5rem;
     opacity: 1;
-    transition: 1s ease-in-out;
+    transition: 0.8s ease-in-out;
   }
   & .show-more {
     position: absolute;
@@ -181,6 +181,18 @@ const CardFooter = styled.div<{
     left: 0;
     transition: 0.8s ease-in-out;
     visibility: hidden;
+    & > span {
+      color: var(--white);
+      font-weight: var(--bold);
+      font-size: 1.2rem;
+      opacity: 0;
+      text-transform: uppercase;
+      transition: var(--btn-transition);
+    }
+    &:active span {
+      transform: scale(0.9);
+      transition: 0.2s ease-in-out;
+    }
     &::before {
       content: "";
       position: absolute;
@@ -190,12 +202,6 @@ const CardFooter = styled.div<{
         props.background};
       opacity: 0.5;
       z-index: -1;
-    }
-    & > span {
-      color: var(--white);
-      opacity: 0;
-      text-transform: uppercase;
-      transition: var(--btn-transition);
     }
   }
 `;

@@ -25,13 +25,14 @@ export interface AlertProps {
 
 export interface BadgeProps {
   type: PokemonType;
-  onClick?: () => void;
+  disabled?: boolean;
+  onClick?: (type: PokemonType) => void;
   selectedType?: string;
 }
 
 export interface BreadcrumbProps {
   generation?: Generation;
-  type?: string;
+  type?: PokemonType;
   count: number;
   pokemons: number;
 }
@@ -67,6 +68,7 @@ export interface DividerProps {
 export interface FilterProps {
   selectedType: PokemonType;
   selectedGeneration: Generation;
+  loading: boolean;
   setLoading: (
     isLoading: boolean
   ) => void;

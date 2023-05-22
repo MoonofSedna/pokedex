@@ -24,6 +24,10 @@ const Generations = styled.div`
       );
       color: var(--white);
     }
+    &[disabled] {
+      opacity: 0.6;
+      cursor: default;
+    }
   }
 `;
 
@@ -36,9 +40,6 @@ const Types = styled.div`
     auto-fill,
     minmax(110px, 1fr)
   );
-  & > div {
-    cursor: pointer;
-  }
 `;
 
 export { Generations, Types };

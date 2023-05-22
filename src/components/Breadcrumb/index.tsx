@@ -5,6 +5,7 @@ import { BreadcrumbProps } from "@/interfaces/components";
 import * as C from "./styles";
 // utils
 import { DEFAULT_TYPE } from "@/utils/constant";
+import { pokemonTypes } from "@/utils/pokemon-types";
 
 export default memo(
   function Breadcrumb({
@@ -30,7 +31,15 @@ export default memo(
               {generation.text}
             </span>
             <span>{" > "}</span>
-            <span>{type}</span>
+            {type && (
+              <C.Type
+                background={
+                  pokemonTypes[type]
+                }
+              >
+                {type}
+              </C.Type>
+            )}
             <span>{" > "}</span>
             <span>
               {pokemonsInScreen} /{" "}

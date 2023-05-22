@@ -5,6 +5,14 @@ const Badge = styled.label<{
 }>`
   &.selected {
     cursor: pointer;
+    transition: var(--btn-transition);
+    &:not(
+        :has(input:checked),
+        :has(input:disabled)
+      ):active {
+      transform: scale(0.95);
+      transition: var(--btn-transition);
+    }
   }
   display: flex;
   align-items: center;
@@ -31,11 +39,16 @@ const Badge = styled.label<{
   & span {
     line-height: 0;
   }
+  &:has(input:disabled) {
+    opacity: 0.6;
+    cursor: default;
+    & span:before {
+      cursor: default;
+    }
+  }
 `;
 
-const RadioButton = styled.div<{
-  color: string;
-}>`
+const RadioButton = styled.div`
   margin-left: 0.3rem;
   & input {
     position: absolute;
@@ -62,8 +75,7 @@ const RadioButton = styled.div<{
     &:checked {
       + span {
         &:before {
-          background-color: ${(props) =>
-            props.color};
+          background-color: #9999;
           box-shadow: inset 0 0 0 4px
             var(--white);
         }

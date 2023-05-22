@@ -24,8 +24,18 @@ export const Button = styled.button<{
   font-weight: var(--bold);
   font-size: 1rem;
   cursor: pointer;
+  transform: scale(1);
   transition: var(--btn-transition);
   text-transform: uppercase;
+  ${(props) =>
+    !props.search && {
+      "&:not(.active, [disabled]):active":
+        {
+          transform: "scale(0.95)",
+          transition:
+            "0.2s ease-in-out",
+        },
+    }}
   &.scroll-btn {
     padding: 0.5rem 0.6rem;
     position: absolute;
@@ -41,7 +51,7 @@ export const Button = styled.button<{
       transition: var(--btn-transition);
     }
   }
-  &:hover {
+  &:not(.active, [disabled]):hover {
     color: var(--white);
     transition: var(--btn-transition);
     background-color: rgba(

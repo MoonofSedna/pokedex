@@ -10,16 +10,17 @@ import * as C from "./styles";
 
 function Badge({
   type,
+  disabled,
   onClick,
   selectedType,
 }: BadgeProps) {
   return (
     <C.Badge
       background={pokemonTypes[type]}
-      onClick={onClick}
       className={
         selectedType ? "selected" : ""
       }
+      htmlFor={type}
     >
       {pokemonTypes[type] && (
         <Icon
@@ -30,16 +31,15 @@ function Badge({
       )}
       <span>{type}</span>
       {selectedType && (
-        <C.RadioButton
-          color={pokemonTypes[type]}
-        >
+        <C.RadioButton>
           <input
             id={type}
+            disabled={disabled}
             checked={
               selectedType === type
             }
             onChange={() => {
-              return;
+              onClick?.(type);
             }}
             type="radio"
           />

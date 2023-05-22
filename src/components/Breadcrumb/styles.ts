@@ -15,13 +15,21 @@ export const Breadcrumb = styled.div`
   gap: 1rem;
   flex-wrap: wrap;
   & > span:not(:nth-child(2n)) {
+    padding: 0.5rem 0.6rem;
+    color: var(--white);
     background-color: var(
       --transparent-white
     );
-    padding: 0.5rem 0.6rem;
     border-radius: var(
       --badge-border-radius
     );
-    color: var(--white);
   }
+`;
+
+export const Type = styled.span<{
+  background: string;
+}>`
+  background-color: ${(props) =>
+    props.background !== "#000" &&
+    props.background} !important;
 `;
